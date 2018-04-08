@@ -108,7 +108,13 @@ namespace ExamTable.Controllers.algorithm
         {
             int startHour = startValue % 10000;
             int endHour = endValue % 10000;
-            return isHourValid(startHour) && isHourValid(endHour);
+
+            if (startHour >= GreedyAlgo.MIN_AM_HOUR && startHour <= GreedyAlgo.MAX_AM_HOUR)
+                return endHour >= GreedyAlgo.MIN_AM_HOUR && endHour <= GreedyAlgo.MAX_AM_HOUR;
+
+            if (startHour >= GreedyAlgo.MIN_PM_HOUR && startHour <= GreedyAlgo.MAX_PM_HOUR)
+                return endHour >= GreedyAlgo.MIN_PM_HOUR && endHour <= GreedyAlgo.MAX_PM_HOUR;
+            return false;
         }
 
         public static int value2Weekday(int value)
@@ -316,27 +322,53 @@ namespace ExamTable.Controllers.algorithm
         private TimeValueInterval getEarlistTimeData(CourseEntity ce)
         {
             TimeValueInterval earlist = getEarliest(allLevelTimeLine[ce.level], ce.duration);
-            TimeValueInterval byRoom = null, tmp = null, byProtor = null;
-            foreach (RoomEntity re in allRoom)
+            TimeValueInterval ret = null;
+            int count = 0, sessionCt = ce.sessionIds.Count;
+
+            for (int value = earlist.startValue; ; value += 100)
             {
-                if (re.roomType == ce.requiredRoomType)
+                TimeValueInterval t = new TimeValueInterval(value, ce.duration);
+                if (!t.isValid())
+                    continue;
+
+                count = 0;
+                foreach (RoomEntity re in allRoom)
                 {
-                    tmp = getEarliest(re.occupied, ce.duration);
-                    if (byRoom == null || byRoom.startValue > tmp.startValue)
-                        byRoom = tmp;
+                    if (re.roomType == ce.requiredRoomType && getConflictTimeData(re.occupied, t) == null)
+                    {
+                        ++count;
+                        if (count >= sessionCt)
+                        {
+                            ret = t;
+                            break;
+                        }
+                    }
                 }
+
+                if (ret == null)
+                    continue;
+
+                count = 0;
+                foreach (ProtorEntity pe in allProtor)
+                {
+                    if (getConflictTimeData(pe.occupied, t) == null)
+                    {
+                        ++count;
+                        if (count >= sessionCt)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (count < sessionCt)
+                    continue;
+
+                if (getConflictTimeData(allLevelTimeLine[ce.level], ret) == null)
+                    break;
             }
 
-            foreach (ProtorEntity pe in allProtor)
-            {
-                tmp = getEarliest(pe.occupied, ce.duration);
-                if (byProtor == null || byProtor.startValue > tmp.startValue)
-                    byProtor = tmp;
-            }
-
-            earlist = earlist.startValue > byRoom.startValue ? earlist : byRoom; // get the shortest brick
-            earlist = earlist.startValue > byProtor.startValue ? earlist : byProtor;
-            return earlist;
+            return ret;
         }
 
         private void getProtorRoomAndSpecial()
@@ -549,7 +581,7 @@ namespace ExamTable.Controllers.algorithm
         {
             List<ExamEntity> ret = new List<ExamEntity>();
             int sessionCt = remainSessions.Count;
-            int sessionIndex = 0, roomIndex = 0, protorIndex = 0;
+            int sessionIndex = 0;
 
             foreach (RoomEntity r in allRoom)
             {
@@ -588,8 +620,6 @@ namespace ExamTable.Controllers.algorithm
                         }
                     }
 
-                    ++roomIndex;
-                    ++protorIndex;
                     ret.Add(entity);
                 }
 
