@@ -1,0 +1,147 @@
+﻿@model IEnumerable<ExamTable.Models.special_arrangement>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.program_code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.program_title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.course_code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.course_title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.course_hours)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.section_number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.have_final_exam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.final_exam_note)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.room_request)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.exam_length)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.weekday)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.room)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.teacher_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.proctor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_deleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_by)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.modified_by)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.modified_on)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.program_code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.program_title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.course_code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.course_title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.course_hours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.section_number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.have_final_exam)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.final_exam_note)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.room_request)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.exam_length)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.weekday)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.room)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.teacher_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.proctor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_deleted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_by)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.modified_by)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.modified_on)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

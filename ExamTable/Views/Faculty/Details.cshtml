@@ -1,0 +1,130 @@
+﻿@model ExamTable.Models.faculty
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>faculty</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.employee_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.employee_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.first_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.first_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.middle_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.middle_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.last_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.last_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gender)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.birthdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.birthdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.e_mail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.e_mail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.mobile_number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mobile_number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.work_number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.work_number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modified_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modified_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modified_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modified_on)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,82 @@
+﻿@model ExamTable.Models.room
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>room</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.capacity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.capacity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modified_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modified_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modified_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modified_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.room_type.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.room_type.type)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

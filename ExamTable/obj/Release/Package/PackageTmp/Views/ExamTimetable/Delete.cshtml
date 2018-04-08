@@ -1,0 +1,192 @@
+﻿@model ExamTable.Models.exam_timetable
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>exam_timetable</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.version_number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.version_number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.program_code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.program_code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.program_title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.program_title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.course_code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.course_code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.course_title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.course_title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.course_hours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.course_hours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.section_number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.section_number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.have_final_exam)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.have_final_exam)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.final_exam_note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.final_exam_note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.room_request)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.room_request)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.exam_length)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.exam_length)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.weekday)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.weekday)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.room)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.room)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.teacher_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.teacher_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.proctor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.proctor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modified_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modified_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modified_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modified_on)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c8d2bce0a47b4f80a45fd168398704f9" Name="Diagram1">
+        <EntityTypeShape EntityType="ExamModels.course" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamModels.course_exam" Width="1.5" PointX="5.25" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamModels.exam_timetable" Width="1.5" PointX="8.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamModels.faculty" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamModels.program" Width="1.5" PointX="6" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamModels.room" Width="1.5" PointX="3" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamModels.room_type" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamModels.section" Width="1.5" PointX="8.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamModels.special_arrangement" Width="1.5" PointX="10.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamModels.sysdiagram" Width="1.5" PointX="10.75" PointY="8.875" IsExpanded="true" />
+        <AssociationConnector Association="ExamModels.FK_course_exam_course" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamModels.FK_course_room_type_1" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamModels.FK_course_room_type_2" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamModels.FK_section_course" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamModels.FK_course_exam_room_type" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamModels.FK_section_faculty" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamModels.FK_section_program" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamModels.FK_room_room_type" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

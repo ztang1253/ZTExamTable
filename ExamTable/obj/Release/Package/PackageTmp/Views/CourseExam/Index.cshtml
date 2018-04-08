@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ExamTable.Models.course_exam>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.course.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.have_final_exam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.exam_length)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.room_type.type)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.course.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.have_final_exam)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.exam_length)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.room_type.type)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.id })
+        </td>
+    </tr>
+}
+
+</table>

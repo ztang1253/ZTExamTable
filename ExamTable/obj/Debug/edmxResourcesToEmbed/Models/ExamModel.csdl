@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ExamModels" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="course">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="hours" Type="Int32" />
+    <Property Name="required_room1_type_id" Type="Int32" />
+    <Property Name="required_room2_type_id" Type="Int32" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="created_on" Type="DateTime" Precision="0" />
+    <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="modified_on" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="course_exam" Relationship="Self.FK_course_exam_course" FromRole="course" ToRole="course_exam" />
+    <NavigationProperty Name="room_type" Relationship="Self.FK_course_room_type_1" FromRole="course" ToRole="room_type" />
+    <NavigationProperty Name="room_type1" Relationship="Self.FK_course_room_type_2" FromRole="course" ToRole="room_type" />
+    <NavigationProperty Name="sections" Relationship="Self.FK_section_course" FromRole="course" ToRole="section" />
+  </EntityType>
+  <EntityType Name="course_exam">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="course_id" Type="Int32" />
+    <Property Name="have_final_exam" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="exam_length" Type="Double" />
+    <Property Name="required_room_type_id" Type="Int32" />
+    <Property Name="final_exam_note" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="created_on" Type="DateTime" Precision="0" />
+    <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="modified_on" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="course" Relationship="Self.FK_course_exam_course" FromRole="course_exam" ToRole="course" />
+    <NavigationProperty Name="room_type" Relationship="Self.FK_course_exam_room_type" FromRole="course_exam" ToRole="room_type" />
+  </EntityType>
+  <EntityType Name="exam_timetable">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version_number" Type="Int32" />
+    <Property Name="program_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="program_title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="course_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="course_title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="course_hours" Type="Int32" />
+    <Property Name="section_number" Type="Int32" />
+    <Property Name="have_final_exam" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="final_exam_note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="room_request" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="exam_length" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="weekday" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="room" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="teacher_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="proctor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="created_on" Type="DateTime" Precision="0" />
+    <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="modified_on" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="faculty">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="employee_id" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="middle_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="birthdate" Type="DateTime" Precision="0" />
+    <Property Name="e_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="mobile_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="work_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="created_on" Type="DateTime" Precision="0" />
+    <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="modified_on" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="sections" Relationship="Self.FK_section_faculty" FromRole="faculty" ToRole="section" />
+  </EntityType>
+  <EntityType Name="program">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="program_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="created_on" Type="DateTime" Precision="0" />
+    <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="modified_on" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="sections" Relationship="Self.FK_section_program" FromRole="program" ToRole="section" />
+  </EntityType>
+  <EntityType Name="room">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="capacity" Type="Int32" />
+    <Property Name="room_type_id" Type="Int32" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="created_on" Type="DateTime" Precision="0" />
+    <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="modified_on" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="room_type" Relationship="Self.FK_room_room_type" FromRole="room" ToRole="room_type" />
+  </EntityType>
+  <EntityType Name="room_type">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="created_on" Type="DateTime" Precision="0" />
+    <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="modified_on" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="courses" Relationship="Self.FK_course_room_type_1" FromRole="room_type" ToRole="course" />
+    <NavigationProperty Name="courses1" Relationship="Self.FK_course_room_type_2" FromRole="room_type" ToRole="course" />
+    <NavigationProperty Name="course_exam" Relationship="Self.FK_course_exam_room_type" FromRole="room_type" ToRole="course_exam" />
+    <NavigationProperty Name="rooms" Relationship="Self.FK_room_room_type" FromRole="room_type" ToRole="room" />
+  </EntityType>
+  <EntityType Name="section">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="section_number" Type="Int32" />
+    <Property Name="program_id" Type="Int32" />
+    <Property Name="course_id" Type="Int32" />
+    <Property Name="student_enrolled" Type="Int32" />
+    <Property Name="faculty_id" Type="Int32" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="created_on" Type="DateTime" Precision="0" />
+    <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="modified_on" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="course" Relationship="Self.FK_section_course" FromRole="section" ToRole="course" />
+    <NavigationProperty Name="faculty" Relationship="Self.FK_section_faculty" FromRole="section" ToRole="faculty" />
+    <NavigationProperty Name="program" Relationship="Self.FK_section_program" FromRole="section" ToRole="program" />
+  </EntityType>
+  <EntityType Name="special_arrangement">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="program_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="program_title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="course_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="course_title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="course_hours" Type="Int32" />
+    <Property Name="section_number" Type="Int32" />
+    <Property Name="have_final_exam" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="final_exam_note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="room_request" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="exam_length" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="weekday" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="room" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="teacher_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="proctor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="created_on" Type="DateTime" Precision="0" />
+    <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="modified_on" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_course_exam_course">
+    <End Role="course" Type="Self.course" Multiplicity="0..1" />
+    <End Role="course_exam" Type="Self.course_exam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="course">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="course_exam">
+        <PropertyRef Name="course_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_course_room_type_1">
+    <End Role="room_type" Type="Self.room_type" Multiplicity="0..1" />
+    <End Role="course" Type="Self.course" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="room_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="course">
+        <PropertyRef Name="required_room1_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_course_room_type_2">
+    <End Role="room_type" Type="Self.room_type" Multiplicity="0..1" />
+    <End Role="course" Type="Self.course" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="room_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="course">
+        <PropertyRef Name="required_room2_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_section_course">
+    <End Role="course" Type="Self.course" Multiplicity="0..1" />
+    <End Role="section" Type="Self.section" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="course">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="section">
+        <PropertyRef Name="course_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_course_exam_room_type">
+    <End Role="room_type" Type="Self.room_type" Multiplicity="0..1" />
+    <End Role="course_exam" Type="Self.course_exam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="room_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="course_exam">
+        <PropertyRef Name="required_room_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_section_faculty">
+    <End Role="faculty" Type="Self.faculty" Multiplicity="0..1" />
+    <End Role="section" Type="Self.section" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="faculty">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="section">
+        <PropertyRef Name="faculty_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_section_program">
+    <End Role="program" Type="Self.program" Multiplicity="0..1" />
+    <End Role="section" Type="Self.section" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="program">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="section">
+        <PropertyRef Name="program_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_room_room_type">
+    <End Role="room_type" Type="Self.room_type" Multiplicity="0..1" />
+    <End Role="room" Type="Self.room" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="room_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="room">
+        <PropertyRef Name="room_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ExamContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="courses" EntityType="Self.course" />
+    <EntitySet Name="course_exam" EntityType="Self.course_exam" />
+    <EntitySet Name="exam_timetable" EntityType="Self.exam_timetable" />
+    <EntitySet Name="faculties" EntityType="Self.faculty" />
+    <EntitySet Name="programs" EntityType="Self.program" />
+    <EntitySet Name="rooms" EntityType="Self.room" />
+    <EntitySet Name="room_type" EntityType="Self.room_type" />
+    <EntitySet Name="sections" EntityType="Self.section" />
+    <EntitySet Name="special_arrangement" EntityType="Self.special_arrangement" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_course_exam_course" Association="Self.FK_course_exam_course">
+      <End Role="course" EntitySet="courses" />
+      <End Role="course_exam" EntitySet="course_exam" />
+    </AssociationSet>
+    <AssociationSet Name="FK_course_room_type_1" Association="Self.FK_course_room_type_1">
+      <End Role="room_type" EntitySet="room_type" />
+      <End Role="course" EntitySet="courses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_course_room_type_2" Association="Self.FK_course_room_type_2">
+      <End Role="room_type" EntitySet="room_type" />
+      <End Role="course" EntitySet="courses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_section_course" Association="Self.FK_section_course">
+      <End Role="course" EntitySet="courses" />
+      <End Role="section" EntitySet="sections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_course_exam_room_type" Association="Self.FK_course_exam_room_type">
+      <End Role="room_type" EntitySet="room_type" />
+      <End Role="course_exam" EntitySet="course_exam" />
+    </AssociationSet>
+    <AssociationSet Name="FK_section_faculty" Association="Self.FK_section_faculty">
+      <End Role="faculty" EntitySet="faculties" />
+      <End Role="section" EntitySet="sections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_section_program" Association="Self.FK_section_program">
+      <End Role="program" EntitySet="programs" />
+      <End Role="section" EntitySet="sections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_room_room_type" Association="Self.FK_room_room_type">
+      <End Role="room_type" EntitySet="room_type" />
+      <End Role="room" EntitySet="rooms" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

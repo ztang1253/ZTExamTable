@@ -1,0 +1,104 @@
+﻿@model ExamTable.Models.section
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>section</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.section_number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.section_number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.student_enrolled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.student_enrolled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modified_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modified_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modified_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modified_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.course.code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.course.code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.faculty.employee_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.faculty.employee_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.program.program_code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.program.program_code)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
