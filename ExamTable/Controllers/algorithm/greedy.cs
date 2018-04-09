@@ -244,6 +244,7 @@ namespace ExamTable.Controllers.algorithm
         private List<RoomEntity> allRoom = new List<RoomEntity>();
         private List<SpecialEntity> allSpecial = new List<SpecialEntity>();
         private List<TimeValueInterval>[] allLevelTimeLine;
+        private List<CourseEntity> nonExamCourse = new List<CourseEntity>();
         private int maxLevel;
 
         private static int adjustStartValue(int value)
@@ -473,6 +474,15 @@ namespace ExamTable.Controllers.algorithm
                         if (course.level == 9) course.level = 5;
                         else if (course.level == 10) course.level = 6;
                         allExamCourse.Add(course);
+                    }
+                    else
+                    {
+                        CourseEntity course = new CourseEntity();
+                        course.courseId = ce.course_id ?? 0;
+                        course.requiredRoomType = ce.required_room_type_id ?? 0;
+                        course.duration = ce.exam_length ?? 0;
+                        course.level = ce.course.hours ?? -1;
+                        nonExamCourse.Add(course);
                     }
                 }
             }
@@ -841,6 +851,16 @@ namespace ExamTable.Controllers.algorithm
 
                 allExamCourse.Remove(ce);
                 sortProtorAndRoom();
+            }
+
+            foreach (CourseEntity ce in nonExamCourse)
+            {
+                ExamEntity ex = new ExamEntity();
+                ex.courseId = ce.courseId;
+                if (ce.sessionIds != null && ce.sessionIds.Count > 0)
+                    ex.protorId = ce.sessionIds[0].facultyId;
+                ex.sessionIds = ce.sessionIds;
+                ex.roomType = ce.requiredRoomType;
             }
 
             return ret;
