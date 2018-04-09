@@ -71,8 +71,9 @@ namespace ExamTable.Controllers
 
                 foreach (var item in table.solution)
                 {
-                    foreach (var section in item.sessionIds)
+                    foreach (var singleSession in item.sessionIds)
                     {
+                        var section = singleSession.sessionId;
                         exam_timetable.version_number = versionNo;
                         exam_timetable.program_code = db.programs.Find(db.sections.Find(section).program_id).program_code;
                         exam_timetable.program_title = db.programs.Find(db.sections.Find(section).program_id).title;

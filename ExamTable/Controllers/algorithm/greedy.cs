@@ -861,6 +861,7 @@ namespace ExamTable.Controllers.algorithm
                     ex.protorId = ce.sessionIds[0].facultyId;
                 ex.sessionIds = ce.sessionIds;
                 ex.roomType = ce.requiredRoomType;
+                ret.addExam(ex);
             }
 
             return ret;
