@@ -516,6 +516,14 @@ namespace ExamTable.Controllers.algorithm
                         ce.sessionIds.Add(new SessionEntity(sId, sessions.faculty_id));
                     }
                 }
+
+                foreach (CourseEntity ce in nonExamCourse)
+                {
+                    if (courseId == ce.courseId)
+                    {
+                        ce.sessionIds.Add(new SessionEntity(sId, sessions.faculty_id));
+                    }
+                }
             }
 
             foreach (CourseEntity ce in allExamCourse)
@@ -547,21 +555,6 @@ namespace ExamTable.Controllers.algorithm
                         return i;
                     });
             }
-        }
-
-        private void sortProtorAndRoom()
-        {
-            allProtor.Sort(
-                delegate (ProtorEntity c1, ProtorEntity c2)
-                {
-                    return c1.protTimes - c2.protTimes;
-                });
-
-            allRoom.Sort(
-                delegate (RoomEntity c1, RoomEntity c2)
-                {
-                    return c1.occupied.Count - c2.occupied.Count;
-                });
         }
 
         private List<SpecialEntity> checkInSpecial(int courseId)
@@ -774,8 +767,21 @@ namespace ExamTable.Controllers.algorithm
 
                     if (!hasProtor)
                     {
+                        bool valid = true;
                         foreach (ProtorEntity pe in allProtor)
                         {
+                            valid = true;
+                            foreach (SessionEntity ss in ce.sessionIds)
+                            {
+                                if (pe.protorId == ss.sessionId && pe.protorId > 0)
+                                {
+                                    valid = false;
+                                    break;
+                                }
+                            }
+
+                            if (!valid) continue;
+
                             if (getConflictTimeData(pe.occupied, timeData) == null)
                             {
                                 entity.protorId = pe.protorId;
@@ -876,7 +882,6 @@ namespace ExamTable.Controllers.algorithm
                 }
 
                 allExamCourse.Remove(ce);
-                sortProtorAndRoom();
             }
 
             foreach (CourseEntity ce in nonExamCourse)

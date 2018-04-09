@@ -84,18 +84,22 @@ namespace ExamTable.Controllers
                         exam_timetable.have_final_exam = db.course_exam.Where(ce => ce.course_id == item.courseId).First().have_final_exam;
                         exam_timetable.final_exam_note = db.course_exam.Where(ce => ce.course_id == item.courseId).First().final_exam_note;
                         exam_timetable.room_request = db.room_type.Find(item.roomType).type;
-                        exam_timetable.exam_length = db.course_exam.Where(ce => ce.course_id == item.courseId).First().exam_length.ToString();
-                        exam_timetable.weekday = getWeekday(item.weekDay);
-                        exam_timetable.time = getTime(item.startHour, item.endHour, double.Parse(exam_timetable.exam_length));
-                        exam_timetable.room = db.rooms.Find(item.roomId).name;
                         var sectionEntity = db.sections.Find(section);
                         if (sectionEntity != null && db.faculties.Find(sectionEntity.faculty_id) != null) // the function to get teacher name is not right here
                         {
                             exam_timetable.teacher_name = db.faculties.Find(sectionEntity.faculty_id).first_name + " " +
                                 db.faculties.Find(sectionEntity.faculty_id).last_name;
                         }
-                        exam_timetable.proctor = db.faculties.Find(item.protorId).first_name + " " +
-                                db.faculties.Find(item.protorId).last_name;
+
+                        if (exam_timetable.have_final_exam.ToUpper().Equals("YES"))
+                        {
+                            exam_timetable.exam_length = db.course_exam.Where(ce => ce.course_id == item.courseId).First().exam_length.ToString();
+                            exam_timetable.weekday = getWeekday(item.weekDay);
+                            exam_timetable.time = getTime(item.startHour, item.endHour, Convert.ToDouble(exam_timetable.exam_length));
+                            exam_timetable.room = db.rooms.Find(item.roomId).name;
+                            exam_timetable.proctor = db.faculties.Find(item.protorId).first_name + " " +
+                                    db.faculties.Find(item.protorId).last_name;
+                        }
                         exam_timetable.created_by = "Liz";
                         exam_timetable.is_deleted = false;
                         db.exam_timetable.Add(exam_timetable);
