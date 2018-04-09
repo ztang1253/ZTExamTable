@@ -228,9 +228,27 @@ namespace ExamTable.Controllers.algorithm
         }
     }
 
+    static class MyExtensions
+    {
+        private static Random rng = new Random();
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
+    }
+
     // Main function class enterance
     public class GreedyAlgo
     {
+        public const bool RANDOM_ORDER = true; // use random order or defined order for exam table
         public const int MIN_AM_HOUR = 900; // 9 o'clock
         public const int MAX_AM_HOUR = 1200; // 12 o'clock
         public const int MIN_PM_HOUR = 1300; // 13 o'clock
@@ -512,15 +530,23 @@ namespace ExamTable.Controllers.algorithm
                 });
             }
 
-            // sort by session count of courses, descending (course with more sessions in first)
-            allExamCourse.Sort(
-                delegate (CourseEntity c1, CourseEntity c2)
-                {
-                    int i = c2.sessionIds.Count - c1.sessionIds.Count;
-                    if (i == 0)
-                        return c1.courseId - c2.courseId;
-                    return i;
-                });
+            if (RANDOM_ORDER)
+            {
+                // shuffle all exam couse to make a diversity exam table
+                allExamCourse.Shuffle();
+            }
+            else
+            {
+                // sort by session count of courses, descending (course with more sessions in first)
+                allExamCourse.Sort(
+                    delegate (CourseEntity c1, CourseEntity c2)
+                    {
+                        int i = c2.sessionIds.Count - c1.sessionIds.Count;
+                        if (i == 0)
+                            return c1.courseId - c2.courseId;
+                        return i;
+                    });
+            }
         }
 
         private void sortProtorAndRoom()
