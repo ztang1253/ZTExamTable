@@ -17,7 +17,7 @@ namespace ExamTable.Controllers
         // GET: Section
         public ActionResult Index()
         {
-            var sections = db.sections.Where(c => c.is_deleted == false)
+            var sections = db.sections
                 .Include(s => s.course)
                 .Include(s => s.faculty)
                 .Include(s => s.program);
@@ -98,6 +98,72 @@ namespace ExamTable.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(section).State = EntityState.Modified;
+
+                if (section.is_deleted == true)
+                {
+                    // set related section deleted = true;
+                    var tempS = db.sections.Where(e => e.course_id == section.course_id);
+                    if (tempS.ToList().Count > 0)
+                    {
+                        foreach (var item in tempS)
+                        {
+                            item.is_deleted = true;
+                        }
+                    }
+
+                    // set related course deleted = true;
+                    var tempC = db.courses.Where(e => e.id == section.course_id);
+                    if (tempC.ToList().Count > 0)
+                    {
+                        foreach (var item in tempC)
+                        {
+                            item.is_deleted = true;
+                        }
+                    }
+
+                    // set related course - exam deleted = true;
+                    var tempCE = db.course_exam.Where(e => e.course_id == section.course_id);
+                    if (tempCE.ToList().Count > 0)
+                    {
+                        foreach (var item in tempCE)
+                        {
+                            item.is_deleted = true;
+                        }
+                    }
+                }
+                else
+                {
+                    // set related section deleted = false;
+                    var tempS = db.sections.Where(e => e.course_id == section.course_id);
+                    if (tempS.ToList().Count > 0)
+                    {
+                        foreach (var item in tempS)
+                        {
+                            item.is_deleted = false;
+                        }
+                    }
+
+                    // set related course deleted = false;
+                    var tempC = db.courses.Where(e => e.id == section.course_id);
+                    if (tempC.ToList().Count > 0)
+                    {
+                        foreach (var item in tempC)
+                        {
+                            item.is_deleted = false;
+                        }
+                    }
+
+                    // set related course - exam deleted = false;
+                    var tempCE = db.course_exam.Where(e => e.course_id == section.course_id);
+                    if (tempCE.ToList().Count > 0)
+                    {
+                        foreach (var item in tempCE)
+                        {
+                            item.is_deleted = false;
+                        }
+                    }
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -128,7 +194,38 @@ namespace ExamTable.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             section section = db.sections.Find(id);
-            db.sections.Remove(section);
+
+            // set related section deleted = true;
+            var tempS = db.sections.Where(e => e.course_id == section.course_id);
+            if (tempS.ToList().Count > 0)
+            {
+                foreach (var item in tempS)
+                {
+                    item.is_deleted = true;
+                }
+            }
+
+            // set related course deleted = true;
+            var tempC = db.courses.Where(e => e.id == section.course_id);
+            if (tempC.ToList().Count > 0)
+            {
+                foreach (var item in tempC)
+                {
+                    item.is_deleted = true;
+                }
+            }
+
+            // set related course - exam deleted = true;
+            var tempCE = db.course_exam.Where(e => e.course_id == section.course_id);
+            if (tempCE.ToList().Count > 0)
+            {
+                foreach (var item in tempCE)
+                {
+                    item.is_deleted = true;
+                }
+            }
+
+            section.is_deleted = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

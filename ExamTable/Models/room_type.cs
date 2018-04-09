@@ -11,7 +11,8 @@ namespace ExamTable.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class room_type
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,7 +24,10 @@ namespace ExamTable.Models
             this.rooms = new HashSet<room>();
         }
     
+        [Display(Name = "Room Type ID")]
         public int id { get; set; }
+
+        [Display(Name = "Room Type")]
         public string type { get; set; }
         public Nullable<bool> is_deleted { get; set; }
         public string created_by { get; set; }

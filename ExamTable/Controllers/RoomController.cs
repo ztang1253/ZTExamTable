@@ -17,7 +17,7 @@ namespace ExamTable.Controllers
         // GET: Room
         public ActionResult Index()
         {
-            var rooms = db.rooms.Where(c => c.is_deleted == false).Include(r => r.room_type);
+            var rooms = db.rooms.Include(r => r.room_type);
             return View(rooms.ToList());
         }
 
@@ -116,7 +116,7 @@ namespace ExamTable.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             room room = db.rooms.Find(id);
-            db.rooms.Remove(room);
+            room.is_deleted = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

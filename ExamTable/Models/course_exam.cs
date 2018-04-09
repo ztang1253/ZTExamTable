@@ -11,15 +11,20 @@ namespace ExamTable.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class course_exam
     {
         public int id { get; set; }
+        [Required]
         public Nullable<int> course_id { get; set; }
+        [Required]
         public string have_final_exam { get; set; }
         public Nullable<double> exam_length { get; set; }
         public Nullable<int> required_room_type_id { get; set; }
         public string final_exam_note { get; set; }
+
+        [Display(Name = "Not Current Course?")]
         public Nullable<bool> is_deleted { get; set; }
         public string created_by { get; set; }
         public Nullable<System.DateTime> created_on { get; set; }

@@ -17,8 +17,10 @@ namespace ExamTable.Controllers
         // GET: ExamTimetable
         public ActionResult Index()
         {
-            return View(db.exam_timetable.Where(e => (e.is_deleted == false))
-                    .OrderBy(e=>e.weekday)
+            int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number;
+            return View(db.exam_timetable.Where(e => e.version_number == ver)
+                    .OrderByDescending(e=>e.version_number)
+                    .ThenBy(w => w.weekday)
                     .ThenBy(a=>a.course_code)
                     .ThenBy(c=>c.section_number)
                     .ToList());
@@ -77,13 +79,13 @@ namespace ExamTable.Controllers
                         exam_timetable.course_code = db.courses.Find(item.courseId).code;
                         exam_timetable.course_title = db.courses.Find(item.courseId).title;
                         exam_timetable.course_hours = db.courses.Find(item.courseId).hours;
-                        exam_timetable.section_number = section;
+                        exam_timetable.section_number = db.sections.Find(section).section_number;
                         exam_timetable.have_final_exam = db.course_exam.Where(ce => ce.course_id == item.courseId).First().have_final_exam;
                         exam_timetable.final_exam_note = db.course_exam.Where(ce => ce.course_id == item.courseId).First().final_exam_note;
                         exam_timetable.room_request = db.room_type.Find(item.roomType).type;
                         exam_timetable.exam_length = db.course_exam.Where(ce => ce.course_id == item.courseId).First().exam_length.ToString();
-                        exam_timetable.weekday = item.weekDay.ToString();
-                        exam_timetable.time = item.startHour.ToString() + " - " + item.endHour.ToString();
+                        exam_timetable.weekday = getWeekday(item.weekDay);
+                        exam_timetable.time = getTime(item.startHour, item.endHour, double.Parse(exam_timetable.exam_length));
                         exam_timetable.room = db.rooms.Find(item.roomId).name;
                         var sectionEntity = db.sections.Find(section);
                         if (sectionEntity != null && db.faculties.Find(sectionEntity.faculty_id) != null) // the function to get teacher name is not right here
@@ -91,7 +93,6 @@ namespace ExamTable.Controllers
                             exam_timetable.teacher_name = db.faculties.Find(sectionEntity.faculty_id).first_name + " " +
                                 db.faculties.Find(sectionEntity.faculty_id).last_name;
                         }
-
                         exam_timetable.proctor = db.faculties.Find(item.protorId).first_name + " " +
                                 db.faculties.Find(item.protorId).last_name;
                         exam_timetable.created_by = "Liz";
@@ -104,6 +105,47 @@ namespace ExamTable.Controllers
             }
 
             return View(exam_timetable);
+        }
+
+        private string getTime(int start, int end, double length)
+        {
+            string tempTime = "";
+            if (length%1 != 0)
+            {
+                tempTime = start.ToString() + ":00 - " + end.ToString() + ":30";
+            }
+            else
+            {
+                tempTime = start.ToString() + ":00 - " + end.ToString() + ":00";
+            }
+
+            return tempTime;
+        }
+
+        private string getWeekday(int weekday)
+        {
+            string tempDay = "";
+            switch (weekday)
+            {
+                case 0:
+                    tempDay = "Monday";
+                    break;
+                case 1:
+                    tempDay = "Tuesday";
+                    break;
+                case 2:
+                    tempDay = "Wednesday";
+                    break;
+                case 3:
+                    tempDay = "Thursday";
+                    break;
+                case 4:
+                    tempDay = "Friday";
+                    break;
+                default:
+                    break;
+            }
+            return tempDay;
         }
 
         // GET: ExamTimetable/Edit/5

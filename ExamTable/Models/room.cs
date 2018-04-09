@@ -11,13 +11,19 @@ namespace ExamTable.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class room
     {
         public int id { get; set; }
+        [Required]
         public string name { get; set; }
+        [Required]
         public Nullable<int> capacity { get; set; }
+        [Required]
         public Nullable<int> room_type_id { get; set; }
+
+        [Display(Name = "Not Available?")]
         public Nullable<bool> is_deleted { get; set; }
         public string created_by { get; set; }
         public Nullable<System.DateTime> created_on { get; set; }

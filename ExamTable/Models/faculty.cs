@@ -11,7 +11,9 @@ namespace ExamTable.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public partial class faculty
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,6 +24,7 @@ namespace ExamTable.Models
     
         public int id { get; set; }
         public string employee_id { get; set; }
+        [Required]
         public string first_name { get; set; }
         public string middle_name { get; set; }
         public string last_name { get; set; }
@@ -30,6 +33,8 @@ namespace ExamTable.Models
         public string e_mail { get; set; }
         public string mobile_number { get; set; }
         public string work_number { get; set; }
+
+        [DisplayName("Not IT Faculty?")]
         public Nullable<bool> is_deleted { get; set; }
         public string created_by { get; set; }
         public Nullable<System.DateTime> created_on { get; set; }

@@ -11,7 +11,9 @@ namespace ExamTable.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public partial class course
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,22 +22,48 @@ namespace ExamTable.Models
             this.course_exam = new HashSet<course_exam>();
             this.sections = new HashSet<section>();
         }
-    
+
+        [Display(Name = "Course ID")]
         public int id { get; set; }
+
+        [Display(Name = "Course Code")]
+        [Required]
         public string code { get; set; }
+
+        [Display(Name = "Course Title")]
+        [Required]
         public string title { get; set; }
+
+        [Display(Name = "Program Level")]
+        [Required]
         public Nullable<int> hours { get; set; }
+
+        [Display(Name = "Required Room Type 1")]
         public Nullable<int> required_room1_type_id { get; set; }
+
+        [Display(Name = "Required Room Type 2")]
         public Nullable<int> required_room2_type_id { get; set; }
+
+        [Display(Name = "Not Current Course?")]
         public Nullable<bool> is_deleted { get; set; }
+
+        [Display(Name = "Created By")]
         public string created_by { get; set; }
+
+        [Display(Name = "Created On")]
         public Nullable<System.DateTime> created_on { get; set; }
+
+        [Display(Name = "Modified By")]
         public string modified_by { get; set; }
+
+        [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<course_exam> course_exam { get; set; }
+
         public virtual room_type room_type { get; set; }
+
         public virtual room_type room_type1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<section> sections { get; set; }

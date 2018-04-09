@@ -4,11 +4,23 @@ using ExamTable.Models;
 
 namespace ExamTable.Controllers.algorithm
 {
+    public class SessionEntity
+    {
+        public int sessionId;
+        public int facultyId;
+
+        public SessionEntity(int id, Nullable<int>faculty)
+        {
+            sessionId = id;
+            facultyId = faculty != null ? faculty.Value : -1;
+        }
+    }
+
     public class ExamEntity
     {
         public int protorId;
         public int courseId;
-        public List<int> sessionIds = new List<int>();
+        public List<SessionEntity> sessionIds = new List<SessionEntity>();
         public int roomId;
         public int roomType;
         public int weekDay; // 0 for monday
@@ -22,7 +34,7 @@ namespace ExamTable.Controllers.algorithm
     {
         public int courseId;
         public int level;
-        public List<int> sessionIds = new List<int>();
+        public List<SessionEntity> sessionIds = new List<SessionEntity>();
         public int requiredRoomType;
         public double duration;
     }
@@ -53,7 +65,7 @@ namespace ExamTable.Controllers.algorithm
             int weekDay = string2Int(week);
             double startHour = Convert.ToDouble(hour);
             double duration = Convert.ToDouble(d);
-            timeData = new TimeValueInterval (weekDay * 10000 + TimeValueInterval.hoursStandardValue(startHour), duration);
+            timeData = new TimeValueInterval(weekDay * 10000 + TimeValueInterval.hoursStandardValue(startHour), duration);
         }
 
         private static int string2Int(string value)
@@ -323,7 +335,7 @@ namespace ExamTable.Controllers.algorithm
         {
             TimeValueInterval earlist = getEarliest(allLevelTimeLine[ce.level], ce.duration);
             TimeValueInterval ret = null;
-            int count = 0, sessionCt = ce.sessionIds.Count;
+            int count = 0, sessionCt = ce.sessionIds.Count, roomCt = 0;
 
             for (int value = earlist.startValue; ; value += 100)
             {
@@ -336,7 +348,8 @@ namespace ExamTable.Controllers.algorithm
                 {
                     if (re.roomType == ce.requiredRoomType && getConflictTimeData(re.occupied, t) == null)
                     {
-                        ++count;
+                        count += re.roomCapacity / SESSION_CAPACITY;
+                        ++roomCt;
                         if (count >= sessionCt)
                         {
                             ret = t;
@@ -349,19 +362,52 @@ namespace ExamTable.Controllers.algorithm
                     continue;
 
                 count = 0;
-                foreach (ProtorEntity pe in allProtor)
+                foreach (SessionEntity se in ce.sessionIds)
                 {
-                    if (getConflictTimeData(pe.occupied, t) == null)
+                    if (se.facultyId <= 0) continue;
+
+                    ProtorEntity specialProtor = null;
+                    foreach (ProtorEntity pe in allProtor)
                     {
-                        ++count;
-                        if (count >= sessionCt)
+                        if (pe.protorId == se.facultyId)
                         {
+                            specialProtor = pe;
+                            break;
+                        }
+                    }
+
+                    if (specialProtor != null)
+                    {
+                        if (getConflictTimeData(specialProtor.occupied, t) == null)
+                        {
+                            ++count;
+                        }
+                        else
+                        {
+                            count = -1;
                             break;
                         }
                     }
                 }
 
-                if (count < sessionCt)
+                if (count < 0) continue;
+
+                if (count < roomCt)
+                {
+                    foreach (ProtorEntity pe in allProtor)
+                    {
+                        if (getConflictTimeData(pe.occupied, t) == null)
+                        {
+                            ++count;
+                            if (count >= roomCt)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (count < roomCt)
                     continue;
 
                 if (getConflictTimeData(allLevelTimeLine[ce.level], ret) == null)
@@ -439,9 +485,21 @@ namespace ExamTable.Controllers.algorithm
                 {
                     if (courseId == ce.courseId)
                     {
-                        ce.sessionIds.Add(sId);
+                        ce.sessionIds.Add(new SessionEntity(sId, sessions.faculty_id));
                     }
                 }
+            }
+
+            foreach (CourseEntity ce in allExamCourse)
+            {
+                ce.sessionIds.Sort(
+                delegate (SessionEntity s1, SessionEntity s2)
+                {
+                    int i = s1.facultyId - s2.facultyId;
+                    if (i == 0)
+                        return s1.sessionId - s2.sessionId;
+                    return i;
+                });
             }
 
             // sort by session count of courses, descending (course with more sessions in first)
@@ -482,7 +540,7 @@ namespace ExamTable.Controllers.algorithm
             return ret;
         }
 
-        private ExamEntity specialArrange(CourseEntity course, SpecialEntity special, TimeValueInterval timeData, List<int> remainSessions)
+        private ExamEntity specialArrange(CourseEntity course, SpecialEntity special, TimeValueInterval timeData, List<SessionEntity> remainSessions)
         {
             int sessionCt = remainSessions.Count;
             int sessionIndex = 0;
@@ -526,17 +584,45 @@ namespace ExamTable.Controllers.algorithm
             int sessionsThisRoom = room.roomCapacity / SESSION_CAPACITY;
             if (special.sessionId > 0)
             {
-                exam.sessionIds.Add(special.sessionId);
-                remainSessions.Remove(special.sessionId);
+                SessionEntity target = null;
+                foreach (SessionEntity s in remainSessions)
+                {
+                    if (s.sessionId == special.sessionId)
+                    {
+                        target = s;
+                        break;
+                    }
+                }
+
+                if (target != null)
+                {
+                    exam.sessionIds.Add(target);
+                    remainSessions.Remove(target);
+                }
                 --sessionsThisRoom;
             }
 
+            int sessionFacultyId = -1;
             for (int i = 0; i < sessionsThisRoom; ++i, ++sessionIndex)
             {
                 if (sessionIndex >= remainSessions.Count)
                     break;
 
                 exam.sessionIds.Add(remainSessions[sessionIndex]);
+                if (sessionFacultyId <= 0) sessionFacultyId = remainSessions[sessionIndex].facultyId;
+            }
+
+            ProtorEntity sessionFaculty = null;
+            if (sessionFacultyId > 0)
+            {
+                foreach (ProtorEntity pe in allProtor)
+                {
+                    if (pe.protorId == sessionFacultyId)
+                    {
+                        sessionFaculty = pe;
+                        break;
+                    }
+                }
             }
 
             remainSessions.RemoveRange(0, sessionIndex);
@@ -561,13 +647,27 @@ namespace ExamTable.Controllers.algorithm
             }
             else
             {
-                foreach (ProtorEntity pe in allProtor)
+                bool hasProtor = false;
+                if (sessionFaculty != null)
                 {
-                    if (getConflictTimeData(pe.occupied, timeData) == null && pe.protorId != special.protorId)
+                    if (getConflictTimeData(sessionFaculty.occupied, timeData) == null)
                     {
-                        exam.protorId = pe.protorId;
-                        pe.arrangeExam(timeData);
-                        break;
+                        exam.protorId = sessionFaculty.protorId;
+                        sessionFaculty.arrangeExam(timeData);
+                        hasProtor = true;
+                    }
+                }
+
+                if (!hasProtor)
+                {
+                    foreach (ProtorEntity pe in allProtor)
+                    {
+                        if (getConflictTimeData(pe.occupied, timeData) == null && pe.protorId != special.protorId)
+                        {
+                            exam.protorId = pe.protorId;
+                            pe.arrangeExam(timeData);
+                            break;
+                        }
                     }
                 }
             }
@@ -577,7 +677,7 @@ namespace ExamTable.Controllers.algorithm
             return exam;
         }
 
-        private List<ExamEntity> normalArrange(CourseEntity ce, List<int> remainSessions, TimeValueInterval timeData)
+        private List<ExamEntity> normalArrange(CourseEntity ce, List<SessionEntity> remainSessions, TimeValueInterval timeData)
         {
             List<ExamEntity> ret = new List<ExamEntity>();
             int sessionCt = remainSessions.Count;
@@ -602,24 +702,54 @@ namespace ExamTable.Controllers.algorithm
                     allLevelTimeLine[ce.level].Add(timeData);
 
                     int sessionsThisRoom = r.roomCapacity / SESSION_CAPACITY;
+                    int protorId = -1;
                     for (int i = 0; i < sessionsThisRoom; ++i, ++sessionIndex)
                     {
                         if (sessionIndex >= remainSessions.Count)
                             break;
 
                         entity.sessionIds.Add(remainSessions[sessionIndex]);
+                        if (protorId <= 0) protorId = remainSessions[sessionIndex].facultyId;
                     }
 
-                    foreach (ProtorEntity pe in allProtor)
+                    bool hasProtor = false;
+                    ProtorEntity sessionFaculty = null;
+                    if (protorId > 0)
                     {
-                        if (getConflictTimeData(pe.occupied, timeData) == null)
+                        foreach (ProtorEntity pe in allProtor)
                         {
-                            entity.protorId = pe.protorId;
-                            pe.arrangeExam(timeData);
-                            break;
+                            if (pe.protorId == protorId)
+                            {
+                                sessionFaculty = pe;
+                                break;
+                            }
                         }
                     }
 
+                    if (sessionFaculty != null)
+                    {
+                        if (getConflictTimeData(sessionFaculty.occupied, timeData) == null)
+                        {
+                            entity.protorId = sessionFaculty.protorId;
+                            sessionFaculty.arrangeExam(timeData);
+                            hasProtor = true;
+                        }
+                    }
+
+                    if (!hasProtor)
+                    {
+                        foreach (ProtorEntity pe in allProtor)
+                        {
+                            if (getConflictTimeData(pe.occupied, timeData) == null)
+                            {
+                                entity.protorId = pe.protorId;
+                                pe.arrangeExam(timeData);
+                                break;
+                            }
+                        }
+
+                        Console.WriteLine("DOES NOT use teacher as protor!!!");
+                    }
                     ret.Add(entity);
                 }
 
@@ -666,7 +796,7 @@ namespace ExamTable.Controllers.algorithm
                     continue;
                 }
 
-                List<int> remainSessions = new List<int>(ce.sessionIds);
+                List<SessionEntity> remainSessions = new List<SessionEntity>(ce.sessionIds);
                 TimeValueInterval timeData = allSpecial[0].timeData;
 
                 if (s.Count > 0) // special arrangement(course with a specified room an start time)
@@ -698,7 +828,7 @@ namespace ExamTable.Controllers.algorithm
             while (allExamCourse.Count > 0)
             {
                 CourseEntity ce = allExamCourse[0];
-                List<int> remainSessions = new List<int>(ce.sessionIds);
+                List<SessionEntity> remainSessions = new List<SessionEntity>(ce.sessionIds);
                 TimeValueInterval timeData = getEarlistTimeData(ce);
                 if (remainSessions.Count > 0)
                 {

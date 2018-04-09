@@ -11,15 +11,22 @@ namespace ExamTable.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class section
     {
         public int id { get; set; }
+        [Required]
         public Nullable<int> section_number { get; set; }
         public Nullable<int> program_id { get; set; }
+        [Required]
         public Nullable<int> course_id { get; set; }
+        [Required]
         public Nullable<int> student_enrolled { get; set; }
+        [Required]
         public Nullable<int> faculty_id { get; set; }
+
+        [Display(Name = "Not Current Course?")]
         public Nullable<bool> is_deleted { get; set; }
         public string created_by { get; set; }
         public Nullable<System.DateTime> created_on { get; set; }

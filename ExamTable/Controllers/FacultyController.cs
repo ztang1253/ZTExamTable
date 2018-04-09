@@ -17,7 +17,7 @@ namespace ExamTable.Controllers
         // GET: Faculty
         public ActionResult Index()
         {
-            return View(db.faculties.Where(c => c.is_deleted == false).ToList());
+            return View(db.faculties.ToList());
         }
 
         // GET: Faculty/Details/5
@@ -111,7 +111,7 @@ namespace ExamTable.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             faculty faculty = db.faculties.Find(id);
-            db.faculties.Remove(faculty);
+            faculty.is_deleted = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

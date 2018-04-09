@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<ExamTable.Models.course_exam>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Course - Exam";
 }
 
-<h2>Index</h2>
+<h2>Course - Exam</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -15,7 +15,13 @@
             @Html.DisplayNameFor(model => model.id)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.course.code)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.course.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_deleted)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.have_final_exam)
@@ -35,7 +41,13 @@
             @Html.DisplayFor(modelItem => item.id)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.course.code)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.course.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_deleted)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.have_final_exam)
