@@ -17,7 +17,11 @@ namespace ExamTable.Controllers
         // GET: Course
         public ActionResult Index()
         {
-            var courses = db.courses.Include(c => c.room_type).Include(c => c.room_type1);
+            var courses = db.courses.Include(c => c.room_type).Include(c => c.room_type1)
+                    .OrderBy(o => o.is_deleted)
+                    .ThenBy(l => l.hours)
+                    .ThenBy(c => c.code)
+                    .ThenBy(i => i.id);
             return View(courses.ToList());
         }
 
@@ -53,7 +57,7 @@ namespace ExamTable.Controllers
         {
             if (ModelState.IsValid)
             {
-                course.is_deleted = false;
+                course.created_on = DateTime.Now;
                 db.courses.Add(course);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -137,6 +141,7 @@ namespace ExamTable.Controllers
                     }
                 }
 
+                course.modified_on = DateTime.Now.AddHours(1);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -188,6 +193,7 @@ namespace ExamTable.Controllers
                 }
             }
 
+            course.modified_on = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

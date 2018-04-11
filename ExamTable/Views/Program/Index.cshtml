@@ -44,7 +44,8 @@
             @Html.DisplayFor(modelItem => item.title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.is_deleted)
+            @{ string temp = (bool)item.is_deleted ? "Not Current" : "Current";}
+            @temp
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.created_by)

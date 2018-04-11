@@ -17,7 +17,9 @@ namespace ExamTable.Controllers
         // GET: Room
         public ActionResult Index()
         {
-            var rooms = db.rooms.Include(r => r.room_type);
+            var rooms = db.rooms.Include(r => r.room_type)
+                    .OrderBy(o => o.is_deleted)
+                    .ThenBy(n => n.name);
             return View(rooms.ToList());
         }
 
@@ -52,7 +54,7 @@ namespace ExamTable.Controllers
         {
             if (ModelState.IsValid)
             {
-                room.is_deleted = false;
+                room.created_on = DateTime.Now;
                 db.rooms.Add(room);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -88,6 +90,7 @@ namespace ExamTable.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(room).State = EntityState.Modified;
+                room.modified_on = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -117,6 +120,7 @@ namespace ExamTable.Controllers
         {
             room room = db.rooms.Find(id);
             room.is_deleted = true;
+            room.modified_on = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

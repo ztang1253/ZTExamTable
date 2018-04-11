@@ -15,19 +15,36 @@ namespace ExamTable.Models
 
     public partial class room
     {
+        [Display(Name = "ID")]
         public int id { get; set; }
+
+        [Display(Name = "Room Name")]
         [Required]
         public string name { get; set; }
+
+        [Display(Name = "Room Capacity")]
         [Required]
         public Nullable<int> capacity { get; set; }
+
+        [Display(Name = "Room Type")]
         [Required]
         public Nullable<int> room_type_id { get; set; }
 
-        [Display(Name = "Not Available?")]
+        [Display(Name = "Room Available?")]
         public Nullable<bool> is_deleted { get; set; }
+
+        [Display(Name = "Created By")]
         public string created_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Created On")]
         public Nullable<System.DateTime> created_on { get; set; }
+
+        [Display(Name = "Modified By")]
         public string modified_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
     
         public virtual room_type room_type { get; set; }

@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<ExamTable.Models.section>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Section";
 }
 
-<h2>Index</h2>
+<h2>Section</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -18,7 +18,13 @@
             @Html.DisplayNameFor(model => model.student_enrolled)
         </th>
         <th>
-            Course Name
+            @Html.DisplayNameFor(model => model.course.code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.course.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_deleted)
         </th>
         <th>
             Faculty Name
@@ -38,7 +44,13 @@
             @Html.DisplayFor(modelItem => item.student_enrolled)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.course.code)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.course.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_deleted)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.faculty.first_name) @Html.DisplayFor(modelItem => item.faculty.last_name)
@@ -47,9 +59,9 @@
             @Html.DisplayFor(modelItem => item.program.title)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.id })
         </td>
     </tr>
 }

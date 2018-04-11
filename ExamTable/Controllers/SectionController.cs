@@ -20,7 +20,12 @@ namespace ExamTable.Controllers
             var sections = db.sections
                 .Include(s => s.course)
                 .Include(s => s.faculty)
-                .Include(s => s.program);
+                .Include(s => s.program)
+                .OrderBy(o => o.is_deleted)
+                .ThenBy(l => l.course.hours)
+                .ThenBy(t => t.course.code)
+                .ThenBy(i => i.id)
+                .ThenBy(s => s.section_number);
             return View(sections.ToList());
         }
 
@@ -57,8 +62,7 @@ namespace ExamTable.Controllers
         {
             if (ModelState.IsValid)
             {
-                section.is_deleted = false;
-                section.student_enrolled = 30;
+                section.created_on = DateTime.Now;
                 db.sections.Add(section);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -82,9 +86,11 @@ namespace ExamTable.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.course_id = new SelectList(db.courses, "id", "title", section.course_id);
-            ViewBag.faculty_id = new SelectList(db.faculties, "id", "last_name", section.faculty_id);
+            ViewBag.faculty_id = new SelectList(db.faculties, "id", "fullName", section.faculty_id);
             ViewBag.program_id = new SelectList(db.programs, "id", "title", section.program_id);
+
             return View(section);
         }
 
@@ -99,50 +105,8 @@ namespace ExamTable.Controllers
             {
                 db.Entry(section).State = EntityState.Modified;
 
-                if (section.is_deleted == true)
+                if (section.is_deleted == false)
                 {
-                    // set related section deleted = true;
-                    var tempS = db.sections.Where(e => e.course_id == section.course_id);
-                    if (tempS.ToList().Count > 0)
-                    {
-                        foreach (var item in tempS)
-                        {
-                            item.is_deleted = true;
-                        }
-                    }
-
-                    // set related course deleted = true;
-                    var tempC = db.courses.Where(e => e.id == section.course_id);
-                    if (tempC.ToList().Count > 0)
-                    {
-                        foreach (var item in tempC)
-                        {
-                            item.is_deleted = true;
-                        }
-                    }
-
-                    // set related course - exam deleted = true;
-                    var tempCE = db.course_exam.Where(e => e.course_id == section.course_id);
-                    if (tempCE.ToList().Count > 0)
-                    {
-                        foreach (var item in tempCE)
-                        {
-                            item.is_deleted = true;
-                        }
-                    }
-                }
-                else
-                {
-                    // set related section deleted = false;
-                    var tempS = db.sections.Where(e => e.course_id == section.course_id);
-                    if (tempS.ToList().Count > 0)
-                    {
-                        foreach (var item in tempS)
-                        {
-                            item.is_deleted = false;
-                        }
-                    }
-
                     // set related course deleted = false;
                     var tempC = db.courses.Where(e => e.id == section.course_id);
                     if (tempC.ToList().Count > 0)
@@ -164,6 +128,7 @@ namespace ExamTable.Controllers
                     }
                 }
 
+                section.modified_on = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -195,37 +160,38 @@ namespace ExamTable.Controllers
         {
             section section = db.sections.Find(id);
 
-            // set related section deleted = true;
-            var tempS = db.sections.Where(e => e.course_id == section.course_id);
-            if (tempS.ToList().Count > 0)
-            {
-                foreach (var item in tempS)
-                {
-                    item.is_deleted = true;
-                }
-            }
+            //// set related section deleted = true;
+            //var tempS = db.sections.Where(e => e.course_id == section.course_id);
+            //if (tempS.ToList().Count > 0)
+            //{
+            //    foreach (var item in tempS)
+            //    {
+            //        item.is_deleted = true;
+            //    }
+            //}
 
-            // set related course deleted = true;
-            var tempC = db.courses.Where(e => e.id == section.course_id);
-            if (tempC.ToList().Count > 0)
-            {
-                foreach (var item in tempC)
-                {
-                    item.is_deleted = true;
-                }
-            }
+            //// set related course deleted = true;
+            //var tempC = db.courses.Where(e => e.id == section.course_id);
+            //if (tempC.ToList().Count > 0)
+            //{
+            //    foreach (var item in tempC)
+            //    {
+            //        item.is_deleted = true;
+            //    }
+            //}
 
-            // set related course - exam deleted = true;
-            var tempCE = db.course_exam.Where(e => e.course_id == section.course_id);
-            if (tempCE.ToList().Count > 0)
-            {
-                foreach (var item in tempCE)
-                {
-                    item.is_deleted = true;
-                }
-            }
+            //// set related course - exam deleted = true;
+            //var tempCE = db.course_exam.Where(e => e.course_id == section.course_id);
+            //if (tempCE.ToList().Count > 0)
+            //{
+            //    foreach (var item in tempCE)
+            //    {
+            //        item.is_deleted = true;
+            //    }
+            //}
 
             section.is_deleted = true;
+            section.modified_on = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

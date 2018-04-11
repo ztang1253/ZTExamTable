@@ -19,10 +19,12 @@ namespace ExamTable.Controllers
         {
             int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number;
             return View(db.exam_timetable.Where(e => e.version_number == ver)
-                    .OrderByDescending(e=>e.version_number)
+                    .OrderByDescending(e => e.version_number)
+                    .ThenBy(d => d.is_deleted)
+                    .ThenBy(c => c.course_hours)
                     .ThenBy(w => w.weekday)
-                    .ThenBy(a=>a.course_code)
-                    .ThenBy(c=>c.section_number)
+                    .ThenBy(a => a.course_code)
+                    .ThenBy(c => c.section_number)
                     .ToList());
         }
 
@@ -90,10 +92,6 @@ namespace ExamTable.Controllers
                             exam_timetable.teacher_name = db.faculties.Find(sectionEntity.faculty_id).first_name + " " +
                                 db.faculties.Find(sectionEntity.faculty_id).last_name;
                         }
-                        else
-                        {
-                            exam_timetable.teacher_name = "N/A";
-                        }
 
                         if (exam_timetable.have_final_exam.ToUpper().Equals("YES"))
                         {
@@ -104,14 +102,7 @@ namespace ExamTable.Controllers
                             exam_timetable.proctor = db.faculties.Find(item.protorId).first_name + " " +
                                     db.faculties.Find(item.protorId).last_name;
                         }
-                        else
-                        {
-                            exam_timetable.exam_length = "0";
-                            exam_timetable.weekday = "N/A";
-                            exam_timetable.time = "N/A";
-                            exam_timetable.room = "N/A";
-                            exam_timetable.proctor = "N/A";
-                        }
+
                         exam_timetable.created_by = "Liz";
                         exam_timetable.is_deleted = false;
                         db.exam_timetable.Add(exam_timetable);
@@ -190,14 +181,15 @@ namespace ExamTable.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(exam_timetable).State = EntityState.Modified;
-                if (exam_timetable.is_deleted != false)
-                {
-                    var tempSchedule = db.exam_timetable.Where(e => e.version_number == exam_timetable.version_number);
-                    foreach (var exam in tempSchedule)
-                    {
-                        exam.is_deleted = true;
-                    }
-                }
+                //if (exam_timetable.is_deleted != false)
+                //{
+                //    var tempSchedule = db.exam_timetable.Where(e => e.version_number == exam_timetable.version_number);
+                //    foreach (var exam in tempSchedule)
+                //    {
+                //        exam.is_deleted = true;
+                //    }
+                //}
+                exam_timetable.modified_on = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -225,7 +217,8 @@ namespace ExamTable.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             exam_timetable exam_timetable = db.exam_timetable.Find(id);
-            db.exam_timetable.Remove(exam_timetable);
+            exam_timetable.is_deleted = true;
+            exam_timetable.modified_on = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

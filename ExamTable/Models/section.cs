@@ -15,22 +15,43 @@ namespace ExamTable.Models
 
     public partial class section
     {
+        [Display(Name = "ID")]
         public int id { get; set; }
+
+        [Display(Name = "Section")]
         [Required]
         public Nullable<int> section_number { get; set; }
+
+        [Display(Name = "Program")]
         public Nullable<int> program_id { get; set; }
+
+        [Display(Name = "Course")]
         [Required]
         public Nullable<int> course_id { get; set; }
+
+        [Display(Name = "Student Enrolled")]
         [Required]
         public Nullable<int> student_enrolled { get; set; }
+
+        [Display(Name = "Faculty")]
         [Required]
         public Nullable<int> faculty_id { get; set; }
 
-        [Display(Name = "Not Current Course?")]
+        [Display(Name = "Current Semester?")]
         public Nullable<bool> is_deleted { get; set; }
+
+        [Display(Name = "Created By")]
         public string created_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Created On")]
         public Nullable<System.DateTime> created_on { get; set; }
+
+        [Display(Name = "Modified By")]
         public string modified_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
     
         public virtual course course { get; set; }

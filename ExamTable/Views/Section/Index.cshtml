@@ -24,18 +24,22 @@
             @Html.DisplayNameFor(model => model.course.title)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.course.hours)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.is_deleted)
         </th>
         <th>
             Faculty Name
         </th>
         <th>
-            Program Name
+            @Html.DisplayNameFor(model => model.program.title)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.section_number)
@@ -50,7 +54,11 @@
             @Html.DisplayFor(modelItem => item.course.title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.is_deleted)
+            @Html.DisplayFor(modelItem => item.course.hours)
+        </td>
+        <td>
+            @{ string temp = (bool)item.is_deleted ? "Not Current" : "Current";}
+            @temp
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.faculty.first_name) @Html.DisplayFor(modelItem => item.faculty.last_name)

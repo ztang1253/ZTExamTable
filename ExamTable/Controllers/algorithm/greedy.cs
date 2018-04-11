@@ -519,7 +519,7 @@ namespace ExamTable.Controllers.algorithm
 
                 foreach (CourseEntity ce in nonExamCourse)
                 {
-                    if (courseId == ce.courseId)
+                    if (courseId == ce.courseId && ce.sessionIds.Count <= 0)
                     {
                         ce.sessionIds.Add(new SessionEntity(sId, sessions.faculty_id));
                     }
@@ -731,20 +731,20 @@ namespace ExamTable.Controllers.algorithm
                     allLevelTimeLine[ce.level].Add(timeData);
 
                     int sessionsThisRoom = r.roomCapacity / SESSION_CAPACITY;
-                    int protorId = -1;
                     for (int i = 0; i < sessionsThisRoom; ++i, ++sessionIndex)
                     {
                         if (sessionIndex >= remainSessions.Count)
                             break;
 
                         entity.sessionIds.Add(remainSessions[sessionIndex]);
-                        if (protorId <= 0) protorId = remainSessions[sessionIndex].facultyId;
+                        //if (protorId <= 0) protorId = remainSessions[sessionIndex].facultyId;
                     }
 
                     bool hasProtor = false;
                     ProtorEntity sessionFaculty = null;
-                    if (protorId > 0)
+                    foreach (SessionEntity se in entity.sessionIds)
                     {
+                        int protorId = se.facultyId;
                         foreach (ProtorEntity pe in allProtor)
                         {
                             if (pe.protorId == protorId)
@@ -753,15 +753,16 @@ namespace ExamTable.Controllers.algorithm
                                 break;
                             }
                         }
-                    }
 
-                    if (sessionFaculty != null)
-                    {
-                        if (getConflictTimeData(sessionFaculty.occupied, timeData) == null)
+                        if (sessionFaculty != null)
                         {
-                            entity.protorId = sessionFaculty.protorId;
-                            sessionFaculty.arrangeExam(timeData);
-                            hasProtor = true;
+                            if (getConflictTimeData(sessionFaculty.occupied, timeData) == null)
+                            {
+                                entity.protorId = sessionFaculty.protorId;
+                                sessionFaculty.arrangeExam(timeData);
+                                hasProtor = true;
+                                break;
+                            }
                         }
                     }
 
@@ -792,6 +793,7 @@ namespace ExamTable.Controllers.algorithm
 
                         Console.WriteLine("DOES NOT use teacher as protor!!!");
                     }
+
                     ret.Add(entity);
                 }
 
@@ -884,7 +886,7 @@ namespace ExamTable.Controllers.algorithm
                 allExamCourse.Remove(ce);
             }
 
-            foreach (CourseEntity ce in nonExamCourse)
+            /*foreach (CourseEntity ce in nonExamCourse)
             {
                 ExamEntity ex = new ExamEntity();
                 ex.courseId = ce.courseId;
@@ -893,7 +895,7 @@ namespace ExamTable.Controllers.algorithm
                 ex.sessionIds = ce.sessionIds;
                 ex.roomType = ce.requiredRoomType;
                 ret.addExam(ex);
-            }
+            }*/
 
             return ret;
         }

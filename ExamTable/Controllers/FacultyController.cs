@@ -17,7 +17,7 @@ namespace ExamTable.Controllers
         // GET: Faculty
         public ActionResult Index()
         {
-            return View(db.faculties.ToList());
+            return View(db.faculties.OrderBy(o => o.is_deleted).ThenBy(n => n.last_name).ToList());
         }
 
         // GET: Faculty/Details/5
@@ -50,8 +50,8 @@ namespace ExamTable.Controllers
         {
             if (ModelState.IsValid)
             {
-                faculty.is_deleted = false;
-                db.faculties.Add(faculty);
+                faculty.created_on = DateTime.Now;
+                db.faculties.Add(faculty);                
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -84,6 +84,7 @@ namespace ExamTable.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(faculty).State = EntityState.Modified;
+                faculty.modified_on = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -112,6 +113,7 @@ namespace ExamTable.Controllers
         {
             faculty faculty = db.faculties.Find(id);
             faculty.is_deleted = true;
+            faculty.modified_on = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

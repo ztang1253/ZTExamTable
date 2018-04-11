@@ -11,30 +11,76 @@ namespace ExamTable.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class exam_timetable
     {
+        [Display(Name = "ID")]
         public int id { get; set; }
+
+        [Display(Name = "Version Number")]
         public Nullable<int> version_number { get; set; }
+
+        [Display(Name = "Program Code")]
         public string program_code { get; set; }
+
+        [Display(Name = "Program Title")]
         public string program_title { get; set; }
+
+        [Display(Name = "Course Code")]
         public string course_code { get; set; }
+
+        [Display(Name = "Course Title")]
         public string course_title { get; set; }
+
+        [Display(Name = "Level")]
         public Nullable<int> course_hours { get; set; }
+
+        [Display(Name = "Section")]
         public Nullable<int> section_number { get; set; }
+
+        [Display(Name = "Has Final Exam?")]
         public string have_final_exam { get; set; }
+
+        [Display(Name = "Note")]
         public string final_exam_note { get; set; }
+
+        [Display(Name = "Room Type")]
         public string room_request { get; set; }
+
+        [Display(Name = "Length")]
         public string exam_length { get; set; }
+
+        [Display(Name = "Day")]
         public string weekday { get; set; }
+
+        [Display(Name = "Time")]
         public string time { get; set; }
+
+        [Display(Name = "Room")]
         public string room { get; set; }
+
+        [Display(Name = "Faculty")]
         public string teacher_name { get; set; }
+
+        [Display(Name = "Proctor")]
         public string proctor { get; set; }
+
+        [Display(Name = "Is Deleted?")]
         public Nullable<bool> is_deleted { get; set; }
+
+        [Display(Name = "Created By")]
         public string created_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Created On")]
         public Nullable<System.DateTime> created_on { get; set; }
+
+        [Display(Name = "Modified By")]
         public string modified_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
     }
 }

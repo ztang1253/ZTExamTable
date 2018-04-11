@@ -44,18 +44,20 @@ namespace ExamTable.Models
         [Display(Name = "Required Room Type 2")]
         public Nullable<int> required_room2_type_id { get; set; }
 
-        [Display(Name = "Not Current Course?")]
+        [Display(Name = "Current Semester?")]
         public Nullable<bool> is_deleted { get; set; }
 
         [Display(Name = "Created By")]
         public string created_by { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "Created On")]
         public Nullable<System.DateTime> created_on { get; set; }
 
         [Display(Name = "Modified By")]
         public string modified_by { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
     

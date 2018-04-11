@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<ExamTable.Models.exam_timetable>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Exam Timetable";
 }
 
-<h2>Index</h2>
+<h2>Exam Timetable</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.version_number)
         </th>
         <th>
@@ -19,20 +19,20 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.program_title)
+        </th>*@
+        <th>
+            Course Code
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.course_code)
+            Course Title
         </th>
+        @*<th>
+            Level
+        </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.course_title)
+            Section
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.course_hours)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.section_number)
-        </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.have_final_exam)
         </th>
         <th>
@@ -40,26 +40,26 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.room_request)
+        </th>*@
+        <th>
+            Exam Length
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.exam_length)
+            Day
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.weekday)
+            TIME
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.time)
+            ROOM
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.room)
+            Faculty
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.teacher_name)
+            Proctor
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.proctor)
-        </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.is_deleted)
         </th>
         <th>
@@ -73,13 +73,13 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.modified_on)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.version_number)
         </td>
         <td>
@@ -87,20 +87,20 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.program_title)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.course_code)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.course_title)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.course_hours)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.section_number)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.have_final_exam)
         </td>
         <td>
@@ -108,9 +108,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.room_request)
-        </td>
+        </td>*@
         <td>
-            @Html.DisplayFor(modelItem => item.exam_length)
+            @Html.DisplayFor(modelItem => item.exam_length) hours
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.weekday)
@@ -127,7 +127,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.proctor)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.is_deleted)
         </td>
         <td>
@@ -141,11 +141,12 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.modified_on)
-        </td>
+        </td>*@
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.id })
+            @*|
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })*@
         </td>
     </tr>
 }

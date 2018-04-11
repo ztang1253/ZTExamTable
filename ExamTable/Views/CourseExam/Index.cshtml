@@ -21,6 +21,9 @@
             @Html.DisplayNameFor(model => model.course.title)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.course.hours)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.is_deleted)
         </th>
         <th>
@@ -47,7 +50,11 @@
             @Html.DisplayFor(modelItem => item.course.title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.is_deleted)
+            @Html.DisplayFor(modelItem => item.course.hours)
+        </td>
+        <td>
+            @{ string temp = (bool)item.is_deleted ? "Not Current" : "Current";}
+            @temp
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.have_final_exam)

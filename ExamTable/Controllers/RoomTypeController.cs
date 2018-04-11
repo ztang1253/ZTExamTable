@@ -17,7 +17,7 @@ namespace ExamTable.Controllers
         // GET: RoomType
         public ActionResult Index()
         {
-            return View(db.room_type.Where(c => c.is_deleted == false).ToList());
+            return View(db.room_type.OrderBy(d=>d.is_deleted).ThenBy(o => o.type).ToList());
         }
 
         // GET: RoomType/Details/5
@@ -51,6 +51,7 @@ namespace ExamTable.Controllers
             if (ModelState.IsValid)
             {
                 room_type.is_deleted = false;
+                room_type.created_on = DateTime.Now;
                 db.room_type.Add(room_type);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -84,6 +85,7 @@ namespace ExamTable.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(room_type).State = EntityState.Modified;
+                room_type.modified_on = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -111,7 +113,8 @@ namespace ExamTable.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             room_type room_type = db.room_type.Find(id);
-            db.room_type.Remove(room_type);
+            room_type.is_deleted = true;
+            room_type.modified_on = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

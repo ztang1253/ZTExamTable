@@ -16,11 +16,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Exam Timetable", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Exam Timetable", "Index", "ExamTimetable", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
                     <li>@Html.ActionLink("Course", "Index", "Course")</li>
                     <li>@Html.ActionLink("Course Exam", "Index", "CourseExam")</li>
                     <li>@Html.ActionLink("Faculty", "Index", "Faculty")</li>
@@ -30,8 +30,8 @@
                     <li>@Html.ActionLink("Section", "Index", "Section")</li>
                     <li>@Html.ActionLink("Exam Timetable", "Index", "ExamTimetable")</li>
                     <li>@Html.ActionLink("Special Arrangement", "Index", "SpecialArrangement")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
+                    @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
 
                 </ul>
             </div>

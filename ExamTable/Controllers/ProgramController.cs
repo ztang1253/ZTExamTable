@@ -17,7 +17,7 @@ namespace ExamTable.Controllers
         // GET: Program
         public ActionResult Index()
         {
-            return View(db.programs.Where(c => c.is_deleted == false).ToList());
+            return View(db.programs.OrderBy(o => o.is_deleted).ThenBy(p => p.title).ToList());
         }
 
         // GET: Program/Details/5
@@ -50,7 +50,7 @@ namespace ExamTable.Controllers
         {
             if (ModelState.IsValid)
             {
-                program.is_deleted = false;
+                program.created_on = DateTime.Now;
                 db.programs.Add(program);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -84,6 +84,7 @@ namespace ExamTable.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(program).State = EntityState.Modified;
+                program.modified_on = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -111,7 +112,8 @@ namespace ExamTable.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             program program = db.programs.Find(id);
-            db.programs.Remove(program);
+            program.is_deleted = true;
+            program.modified_on = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -27,12 +27,25 @@ namespace ExamTable.Models
         [Display(Name = "Room Type ID")]
         public int id { get; set; }
 
+        [Required]
         [Display(Name = "Room Type")]
         public string type { get; set; }
+
+        [Display(Name = "Is Deleted?")]
         public Nullable<bool> is_deleted { get; set; }
+
+        [Display(Name = "Created By")]
         public string created_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Created On")]
         public Nullable<System.DateTime> created_on { get; set; }
+
+        [Display(Name = "Modified By")]
         public string modified_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

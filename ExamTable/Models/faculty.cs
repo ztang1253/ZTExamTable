@@ -21,27 +21,65 @@ namespace ExamTable.Models
         {
             this.sections = new HashSet<section>();
         }
-    
+
+        [Display(Name = "ID")]
         public int id { get; set; }
+
+        [Display(Name = "Employee ID")]
         public string employee_id { get; set; }
+
+        [Display(Name = "First Name")]
         [Required]
         public string first_name { get; set; }
+
+        [Display(Name = "Middle Name")]
         public string middle_name { get; set; }
+
+        [Display(Name = "Last Name")]
+        [Required]
         public string last_name { get; set; }
+
+        [Display(Name = "Gender")]
         public string gender { get; set; }
+
+        [Display(Name = "Date of Birth")]
         public Nullable<System.DateTime> birthdate { get; set; }
+
+        [Display(Name = "E-Mail")]
         public string e_mail { get; set; }
+
+        [Display(Name = "Cell Phone Number")]
         public string mobile_number { get; set; }
+
+        [Display(Name = "Work Number")]
         public string work_number { get; set; }
 
-        [DisplayName("Not IT Faculty?")]
+        [DisplayName("Available for Proctor?")]
         public Nullable<bool> is_deleted { get; set; }
+
+        [Display(Name = "Created By")]
         public string created_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Created On")]
         public Nullable<System.DateTime> created_on { get; set; }
+
+        [Display(Name = "Modified By")]
         public string modified_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<section> sections { get; set; }
+
+        public string fullName
+        {
+            get
+            {
+                return first_name + " " + last_name;
+            }
+        }
     }
 }

@@ -31,7 +31,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.is_deleted)
+            @{ string temp = (bool)Model.is_deleted ? "Not Available" : "Available";}
+            @temp
         </dd>
 
         <dt>

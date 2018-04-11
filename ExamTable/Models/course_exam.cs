@@ -15,20 +15,43 @@ namespace ExamTable.Models
 
     public partial class course_exam
     {
+        [Display(Name = "ID")]
         public int id { get; set; }
+
+        [Display(Name = "Course ID")]
         [Required]
         public Nullable<int> course_id { get; set; }
+
+        [Display(Name = "Has Final Exam?")]
         [Required]
         public string have_final_exam { get; set; }
+
+        [Display(Name = "Exam Length")]
+        [Required]
         public Nullable<double> exam_length { get; set; }
+
+        [Display(Name = "Required Room Type")]
+        [Required]
         public Nullable<int> required_room_type_id { get; set; }
+
+        [Display(Name = "Note")]
         public string final_exam_note { get; set; }
 
-        [Display(Name = "Not Current Course?")]
+        [Display(Name = "Current Semester?")]
         public Nullable<bool> is_deleted { get; set; }
+
+        [Display(Name = "Created By")]
         public string created_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Created On")]
         public Nullable<System.DateTime> created_on { get; set; }
+
+        [Display(Name = "Modified By")]
         public string modified_by { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
     
         public virtual course course { get; set; }
