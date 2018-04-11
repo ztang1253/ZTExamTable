@@ -103,12 +103,13 @@ namespace ExamTable.Controllers
                                     db.faculties.Find(item.protorId).last_name;
                         }
 
-                        exam_timetable.created_by = "Liz";
                         exam_timetable.is_deleted = false;
+                        exam_timetable.created_on = DateTime.Now;
                         db.exam_timetable.Add(exam_timetable);
                         db.SaveChanges();
                     }
                 }
+
                 return RedirectToAction("Index");
             }
 
