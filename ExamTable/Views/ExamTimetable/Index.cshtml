@@ -143,7 +143,7 @@
             @Html.DisplayFor(modelItem => item.proctor)
         </td>
         <td>
-            @{ string temp = (bool)item.is_deleted ? "Yes" : "No";}
+            @{ string temp = (bool)item.is_deleted ? "Deleted" : "";}
             @temp
         </td>
         @*<td>
