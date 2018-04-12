@@ -20,7 +20,7 @@
         <th>
             @Html.DisplayNameFor(model => model.is_deleted)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.created_by)
         </th>
         <th>
@@ -31,7 +31,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.modified_on)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
@@ -44,9 +44,10 @@
             @Html.DisplayFor(modelItem => item.title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.is_deleted)
+            @{ string temp = (bool)item.is_deleted ? "Not Current" : "Current";}
+            @temp
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.created_by)
         </td>
         <td>
@@ -57,7 +58,7 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.modified_on)
-        </td>
+        </td>*@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
             @Html.ActionLink("Details", "Details", new { id=item.id }) |

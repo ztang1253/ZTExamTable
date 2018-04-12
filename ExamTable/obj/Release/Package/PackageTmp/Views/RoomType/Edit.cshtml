@@ -28,10 +28,17 @@
         <div class="form-group">
             @Html.LabelFor(model => model.is_deleted, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.is_deleted)
+                    @Html.DropDownListFor(model => model.is_deleted, new SelectList(
+new[]
+{
+new {Value = "true", Text = "Yes"},
+new {Value = "false", Text = "No"}
+},
+"Value",
+"Text",
+Model
+))
                     @Html.ValidationMessageFor(model => model.is_deleted, "", new { @class = "text-danger" })
-                </div>
             </div>
         </div>
 

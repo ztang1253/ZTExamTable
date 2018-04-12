@@ -20,6 +20,9 @@
         <th>
             @Html.DisplayNameFor(model => model.room_type.type)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_deleted)
+        </th>
         <th></th>
     </tr>
 
@@ -35,9 +38,13 @@
             @Html.DisplayFor(modelItem => item.room_type.type)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            @{ string temp = (bool)item.is_deleted ? "Not Available" : "Available";}
+            @temp
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.id })
         </td>
     </tr>
 }

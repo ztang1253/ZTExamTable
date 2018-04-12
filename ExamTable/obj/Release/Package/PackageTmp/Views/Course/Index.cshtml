@@ -21,6 +21,9 @@
             @Html.DisplayNameFor(model => model.title)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.hours)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.is_deleted)
         </th>
         <th></th>
@@ -38,7 +41,11 @@
             @Html.DisplayFor(modelItem => item.title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.is_deleted)
+            @Html.DisplayFor(modelItem => item.hours)
+        </td>
+        <td>
+            @{ string temp = (bool)item.is_deleted ? "Not Current" : "Current";}
+            @temp
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.id }) |

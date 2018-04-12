@@ -481,12 +481,13 @@ namespace ExamTable.Controllers.algorithm
             {
                 if (context.courses.Find(ce.course_id).is_deleted == false)
                 {
-                    if (ce.have_final_exam.ToUpper().Equals("YES") && ce.course_id != null && ce.required_room_type_id != null && ce.exam_length != null && ce.course != null)
+                    double d = ce.exam_length ?? 0;
+                    if (ce.have_final_exam.ToUpper().Equals("YES") && ce.course_id != null && ce.required_room_type_id != null && d > 0 && ce.course != null)
                     {
                         CourseEntity course = new CourseEntity();
                         course.courseId = ce.course_id ?? 0;
                         course.requiredRoomType = ce.required_room_type_id ?? 0;
-                        course.duration = ce.exam_length ?? 0;
+                        course.duration = d;
                         course.level = ce.course.hours ?? -1;
                         maxLevel = Math.Max(maxLevel, course.level);
                         if (course.level == 9) course.level = 5;
@@ -886,16 +887,15 @@ namespace ExamTable.Controllers.algorithm
                 allExamCourse.Remove(ce);
             }
 
-            /*foreach (CourseEntity ce in nonExamCourse)
+            foreach (CourseEntity ce in nonExamCourse)
             {
                 ExamEntity ex = new ExamEntity();
                 ex.courseId = ce.courseId;
-                if (ce.sessionIds != null && ce.sessionIds.Count > 0)
-                    ex.protorId = ce.sessionIds[0].facultyId;
+                ex.protorId = -1;
                 ex.sessionIds = ce.sessionIds;
                 ex.roomType = ce.requiredRoomType;
                 ret.addExam(ex);
-            }*/
+            }
 
             return ret;
         }

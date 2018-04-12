@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.last_name)
         </th>
         <th>
-            Not IT Proctor?
+            @Html.DisplayNameFor(model => model.is_deleted)
         </th>
         <th></th>
     </tr>
@@ -38,7 +38,8 @@
             @Html.DisplayFor(modelItem => item.last_name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.is_deleted)
+            @{ string temp = (bool)item.is_deleted ? "No" : "Yes";}
+            @temp
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.id }) |

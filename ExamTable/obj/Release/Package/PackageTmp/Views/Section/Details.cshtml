@@ -31,7 +31,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.is_deleted)
+            @{ string temp = (bool)Model.is_deleted ? "Not Current" : "Current";}
+            @temp
         </dd>
 
         <dt>

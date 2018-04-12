@@ -92,8 +92,12 @@ namespace ExamTable.Controllers
                             exam_timetable.teacher_name = db.faculties.Find(sectionEntity.faculty_id).first_name + " " +
                                 db.faculties.Find(sectionEntity.faculty_id).last_name;
                         }
+                        else
+                        {
+                            exam_timetable.teacher_name = "";
+                        }
 
-                        if (exam_timetable.have_final_exam.ToUpper().Equals("YES"))
+                        if (item.protorId > 0)
                         {
                             exam_timetable.exam_length = db.course_exam.Where(ce => ce.course_id == item.courseId).First().exam_length.ToString();
                             exam_timetable.weekday = getWeekday(item.weekDay);
@@ -101,6 +105,14 @@ namespace ExamTable.Controllers
                             exam_timetable.room = db.rooms.Find(item.roomId).name;
                             exam_timetable.proctor = db.faculties.Find(item.protorId).first_name + " " +
                                     db.faculties.Find(item.protorId).last_name;
+                        }
+                        else
+                        {
+                            exam_timetable.exam_length = "0";
+                            exam_timetable.weekday = "N/A";
+                            exam_timetable.time = "N/A";
+                            exam_timetable.room = "N/A";
+                            exam_timetable.proctor = "N/A";
                         }
 
                         exam_timetable.is_deleted = false;
