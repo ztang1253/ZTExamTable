@@ -17,8 +17,8 @@ namespace ExamTable.Controllers
         // GET: ExamTimetable
         public ActionResult Index()
         {
-            int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number;
-            return View(db.exam_timetable.Where(e => e.version_number == ver)
+            int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number - 7;
+            return View(db.exam_timetable.Where(e => e.version_number >= ver)
                     .OrderByDescending(e => e.version_number)
                     .ThenBy(d => d.is_deleted)
                     .ThenBy(c => c.course_hours)
