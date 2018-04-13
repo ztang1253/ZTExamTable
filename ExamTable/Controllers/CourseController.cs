@@ -58,7 +58,6 @@ namespace ExamTable.Controllers
             if (ModelState.IsValid)
             {
                 course.created_on = DateTime.Now;
-                course.is_deleted = true;
                 db.courses.Add(course);
                 db.SaveChanges();
                 return RedirectToAction("Index");
