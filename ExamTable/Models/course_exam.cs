@@ -56,5 +56,7 @@ namespace ExamTable.Models
     
         public virtual course course { get; set; }
         public virtual room_type room_type { get; set; }
+
+        
     }
 }

@@ -110,9 +110,9 @@ namespace ExamTable.Controllers
                         {
                             exam_timetable.exam_length = "0";
                             exam_timetable.weekday = "N/A";
-                            exam_timetable.time = "N/A";
-                            exam_timetable.room = "N/A";
-                            exam_timetable.proctor = "N/A";
+                            exam_timetable.time = "";
+                            exam_timetable.room = "";
+                            exam_timetable.proctor = "";
                         }
 
                         exam_timetable.is_deleted = false;

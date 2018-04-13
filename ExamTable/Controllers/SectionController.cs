@@ -47,8 +47,8 @@ namespace ExamTable.Controllers
         // GET: Section/Create
         public ActionResult Create()
         {
-            ViewBag.course_id = new SelectList(db.courses, "id", "title");
-            ViewBag.faculty_id = new SelectList(db.faculties, "id", "last_name");
+            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown");
+            ViewBag.faculty_id = new SelectList(db.faculties.OrderBy(o => o.first_name), "id", "fullName");
             ViewBag.program_id = new SelectList(db.programs, "id", "title");
             return View();
         }
@@ -68,8 +68,8 @@ namespace ExamTable.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.course_id = new SelectList(db.courses, "id", "title", section.course_id);
-            ViewBag.faculty_id = new SelectList(db.faculties, "id", "last_name", section.faculty_id);
+            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", section.course_id);
+            ViewBag.faculty_id = new SelectList(db.faculties.OrderBy(o => o.first_name), "id", "fullName", section.faculty_id);
             ViewBag.program_id = new SelectList(db.programs, "id", "title", section.program_id);
             return View(section);
         }
@@ -87,8 +87,8 @@ namespace ExamTable.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.course_id = new SelectList(db.courses, "id", "title", section.course_id);
-            ViewBag.faculty_id = new SelectList(db.faculties, "id", "fullName", section.faculty_id);
+            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", section.course_id);
+            ViewBag.faculty_id = new SelectList(db.faculties.OrderBy(o => o.first_name), "id", "fullName", section.faculty_id);
             ViewBag.program_id = new SelectList(db.programs, "id", "title", section.program_id);
 
             return View(section);
@@ -132,7 +132,7 @@ namespace ExamTable.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.course_id = new SelectList(db.courses, "id", "title", section.course_id);
+            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", section.course_id);
             ViewBag.faculty_id = new SelectList(db.faculties, "id", "last_name", section.faculty_id);
             ViewBag.program_id = new SelectList(db.programs, "id", "title", section.program_id);
             return View(section);

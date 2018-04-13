@@ -69,5 +69,13 @@ namespace ExamTable.Models
         public virtual room_type room_type1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<section> sections { get; set; }
+
+        public string courseDropdown
+        {
+            get
+            {
+                return code + " - " + title;
+            }
+        }
     }
 }

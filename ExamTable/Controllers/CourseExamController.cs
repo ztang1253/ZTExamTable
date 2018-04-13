@@ -46,7 +46,7 @@ namespace ExamTable.Controllers
         public ActionResult Create()
         {
             ViewBag.required_room_type_id = new SelectList(db.room_type, "id", "type");
-            ViewBag.course_id = new SelectList(db.courses, "id", "title");
+            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown");
             return View();
         }
 
@@ -66,7 +66,7 @@ namespace ExamTable.Controllers
             }
 
             ViewBag.required_room_type_id = new SelectList(db.room_type, "id", "type", course_exam.required_room_type_id);
-            ViewBag.course_id = new SelectList(db.courses, "id", "title", course_exam.course_id);
+            ViewBag.course_id = new SelectList(db.courses.OrderBy(o=>o.code), "id", "courseDropdown", course_exam.course_id);
             return View(course_exam);
         }
 
@@ -83,6 +83,7 @@ namespace ExamTable.Controllers
                 return HttpNotFound();
             }
             ViewBag.required_room_type_id = new SelectList(db.room_type, "id", "type", course_exam.required_room_type_id);
+            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", course_exam.course_id);
             return View(course_exam);
         }
 
@@ -152,6 +153,7 @@ namespace ExamTable.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.required_room_type_id = new SelectList(db.room_type, "id", "type", course_exam.required_room_type_id);
+            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", course_exam.course_id);
             return View(course_exam);
         }
 
