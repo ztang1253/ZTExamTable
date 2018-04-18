@@ -230,8 +230,9 @@ namespace ExamTable.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             exam_timetable exam_timetable = db.exam_timetable.Find(id);
-            exam_timetable.is_deleted = true;
-            exam_timetable.modified_on = DateTime.Now;
+            //exam_timetable.is_deleted = true;
+            //exam_timetable.modified_on = DateTime.Now;
+            db.exam_timetable.Remove(exam_timetable);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

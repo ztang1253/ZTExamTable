@@ -47,9 +47,9 @@ namespace ExamTable.Controllers
         // GET: Section/Create
         public ActionResult Create()
         {
-            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown");
-            ViewBag.faculty_id = new SelectList(db.faculties.OrderBy(o => o.first_name), "id", "fullName");
-            ViewBag.program_id = new SelectList(db.programs, "id", "title");
+            ViewBag.course_id = new SelectList(db.courses.Where(p => p.is_deleted == false).OrderBy(o => o.code), "id", "courseDropdown");
+            ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName");
+            ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title");
             return View();
         }
 
@@ -60,17 +60,36 @@ namespace ExamTable.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,section_number,program_id,course_id,student_enrolled,faculty_id,is_deleted,created_by,created_on,modified_by,modified_on")] section section)
         {
-            if (ModelState.IsValid)
+            string err = "";
+            var tempList = db.sections.Where(s => s.course_id == section.course_id);
+            
+                foreach (var item in tempList)
+                {
+                    if (item.section_number == section.section_number)
+                    {
+                        err = "Cannot create duplicated section number for same course. This section number exists for this course.";
+                        section.section_number = null;
+                        break;
+                    }
+                }
+
+            if (section.section_number != null)
             {
-                section.created_on = DateTime.Now;
-                db.sections.Add(section);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    section.created_on = DateTime.Now;
+                    section.student_enrolled = 30;
+                    db.sections.Add(section);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
-            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", section.course_id);
-            ViewBag.faculty_id = new SelectList(db.faculties.OrderBy(o => o.first_name), "id", "fullName", section.faculty_id);
-            ViewBag.program_id = new SelectList(db.programs, "id", "title", section.program_id);
+            ViewBag.course_id = new SelectList(db.courses.Where(p => p.is_deleted == false).OrderBy(o => o.code),
+                    "id", "courseDropdown", section.course_id);
+            ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName", section.faculty_id);
+            ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title", section.program_id);
+            ViewBag.Error = err;
             return View(section);
         }
 
@@ -87,9 +106,10 @@ namespace ExamTable.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", section.course_id);
-            ViewBag.faculty_id = new SelectList(db.faculties.OrderBy(o => o.first_name), "id", "fullName", section.faculty_id);
-            ViewBag.program_id = new SelectList(db.programs, "id", "title", section.program_id);
+            ViewBag.course_id = new SelectList(db.courses.Where(c => c.is_deleted == false || c.id == section.course_id).OrderBy(o => o.code),
+                        "id", "courseDropdown", section.course_id);
+            ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName", section.faculty_id);
+            ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title", section.program_id);
 
             return View(section);
         }
@@ -128,13 +148,15 @@ namespace ExamTable.Controllers
                     }
                 }
 
+                section.student_enrolled = 30;
                 section.modified_on = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", section.course_id);
-            ViewBag.faculty_id = new SelectList(db.faculties, "id", "last_name", section.faculty_id);
-            ViewBag.program_id = new SelectList(db.programs, "id", "title", section.program_id);
+
+            ViewBag.course_id = new SelectList(db.courses.Where(c => c.is_deleted == false || c.id == section.course_id).OrderBy(o => o.code), "id", "courseDropdown", section.course_id);
+            ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false), "id", "last_name", section.faculty_id);
+            ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title", section.program_id);
             return View(section);
         }
 
@@ -190,8 +212,10 @@ namespace ExamTable.Controllers
             //    }
             //}
 
-            section.is_deleted = true;
-            section.modified_on = DateTime.Now;
+            //section.is_deleted = true;
+            //section.modified_on = DateTime.Now;
+
+            db.sections.Remove(section);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

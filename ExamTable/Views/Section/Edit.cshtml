@@ -12,8 +12,16 @@
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>section</h4>
+    <h4>Section</h4>
     <hr />
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @if (ViewBag.Error != null)
+    {
+        <h4 style="color:red">@ViewBag.Error</h4>
+    }
+
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.id)
 
@@ -41,13 +49,13 @@
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.student_enrolled, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.student_enrolled, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.student_enrolled, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.student_enrolled, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.student_enrolled, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.student_enrolled, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
     <div class="form-group">
         @Html.LabelFor(model => model.faculty_id, "Faculty", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -61,22 +69,22 @@
         @Html.LabelFor(model => model.is_deleted, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @*<div class="checkbox">
-            @Html.EditorFor(model => model.is_deleted)
-            @Html.ValidationMessageFor(model => model.is_deleted, "", new { @class = "text-danger" })
-        </div>*@
+                    @Html.EditorFor(model => model.is_deleted)
+                    @Html.ValidationMessageFor(model => model.is_deleted, "", new { @class = "text-danger" })
+                </div>*@
 
-                @Html.DropDownListFor(model => model.is_deleted, new SelectList(
-                    new[]
-                    {
-                        new {Value = "true", Text = "Not Current"},
-                        new {Value = "false", Text = "Current"}
-                    },
-                    "Value",
-                    "Text",
-                    Model
-               ))
-                @Html.ValidationMessageFor(model => model.is_deleted, "", new { @class = "text-danger" })
-            
+            @Html.DropDownListFor(model => model.is_deleted, new SelectList(
+                     new[]
+                     {
+                    new {Value = "true", Text = "Not Current"},
+                    new {Value = "false", Text = "Current"}
+                     },
+                     "Value",
+                     "Text",
+                     Model
+                ))
+            @Html.ValidationMessageFor(model => model.is_deleted, "", new { @class = "text-danger" })
+
 
         </div>
     </div>
@@ -106,12 +114,12 @@
     </div>
 
     @*<div class="form-group">
-        @Html.LabelFor(model => model.modified_on, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.modified_on, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.modified_on, "", new { @class = "text-danger" })
-        </div>
-    </div>*@
+            @Html.LabelFor(model => model.modified_on, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.modified_on, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.modified_on, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

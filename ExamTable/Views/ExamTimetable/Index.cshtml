@@ -69,7 +69,7 @@
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.is_deleted)*@
-            Is <br />
+            Soft <br />
             Deleted?
         </th>
         @*<th>
@@ -145,7 +145,7 @@
             @Html.DisplayFor(modelItem => item.proctor)
         </td>
         <td>
-            @{ string temp = (bool)item.is_deleted ? "Deleted" : "";}
+            @{ string temp = (bool)item.is_deleted ? "Soft Deleted" : "";}
             @temp
         </td>
         @*<td>

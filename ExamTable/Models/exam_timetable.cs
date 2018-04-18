@@ -66,7 +66,7 @@ namespace ExamTable.Models
         [Display(Name = "Proctor")]
         public string proctor { get; set; }
 
-        [Display(Name = "Is Deleted?")]
+        [Display(Name = "Soft Deleted?")]
         public Nullable<bool> is_deleted { get; set; }
 
         [Display(Name = "Created By")]

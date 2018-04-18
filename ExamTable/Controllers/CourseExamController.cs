@@ -45,13 +45,14 @@ namespace ExamTable.Controllers
         // GET: CourseExam/Create
         public ActionResult Create()
         {
-            ViewBag.required_room_type_id = new SelectList(db.room_type, "id", "type");
-            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown");
+            ViewBag.required_room_type_id = new SelectList(db.room_type.Where(c => c.is_deleted == false), "id", "type");
+            ViewBag.course_id = new SelectList(db.courses.Where(p => !(db.course_exam.Any(p2 => p2.course_id == p.id)) &&
+                    p.is_deleted == false).OrderBy(o => o.code), "id", "courseDropdown");
             return View();
         }
 
         // POST: CourseExam/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for  
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -65,8 +66,11 @@ namespace ExamTable.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.required_room_type_id = new SelectList(db.room_type, "id", "type", course_exam.required_room_type_id);
-            ViewBag.course_id = new SelectList(db.courses.OrderBy(o=>o.code), "id", "courseDropdown", course_exam.course_id);
+            ViewBag.required_room_type_id = new SelectList(db.room_type.Where(r => r.is_deleted == false),
+                    "id", "type", course_exam.required_room_type_id);
+            ViewBag.course_id = new SelectList(db.courses.Where(p => !(db.course_exam.Any(p2 => p2.course_id == p.id)) &&
+                    p.is_deleted == false).OrderBy(o => o.code),
+                    "id", "courseDropdown", course_exam.course_id);
             return View(course_exam);
         }
 
@@ -82,8 +86,9 @@ namespace ExamTable.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.required_room_type_id = new SelectList(db.room_type, "id", "type", course_exam.required_room_type_id);
-            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", course_exam.course_id);
+            ViewBag.required_room_type_id = new SelectList(db.room_type.Where(c => c.is_deleted == false), "id", "type", course_exam.required_room_type_id);
+            ViewBag.course_id = new SelectList(db.courses.Where(c => c.is_deleted == false || c.id == course_exam.course_id).OrderBy(o => o.code), 
+                        "id", "courseDropdown", course_exam.course_id);
             return View(course_exam);
         }
 
@@ -152,8 +157,8 @@ namespace ExamTable.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.required_room_type_id = new SelectList(db.room_type, "id", "type", course_exam.required_room_type_id);
-            ViewBag.course_id = new SelectList(db.courses.OrderBy(o => o.code), "id", "courseDropdown", course_exam.course_id);
+            ViewBag.required_room_type_id = new SelectList(db.room_type.Where(c => c.is_deleted == false), "id", "type", course_exam.required_room_type_id);
+            ViewBag.course_id = new SelectList(db.courses.Where(c => c.is_deleted == false || c.id == course_exam.course_id).OrderBy(o => o.code), "id", "courseDropdown", course_exam.course_id);
             return View(course_exam);
         }
 

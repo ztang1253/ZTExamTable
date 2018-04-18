@@ -30,7 +30,7 @@ namespace ExamTable.Models
         public Nullable<int> course_id { get; set; }
 
         [Display(Name = "Student Enrolled")]
-        [Required]
+        //[Required] //remove this because create modelstate is invalid because of null student enrolled...
         public Nullable<int> student_enrolled { get; set; }
 
         [Display(Name = "Faculty")]

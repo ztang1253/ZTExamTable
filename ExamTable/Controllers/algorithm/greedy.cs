@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ExamTable.Models;
 
 namespace ExamTable.Controllers.algorithm
@@ -506,7 +507,7 @@ namespace ExamTable.Controllers.algorithm
                 }
             }
 
-            foreach (section sessions in context.sections)
+            foreach (section sessions in context.sections.Where(w => w.is_deleted == false))
             {
                 int courseId = sessions.course_id ?? 0;
                 int sId = sessions.id;
