@@ -19,6 +19,7 @@
     <NavigationProperty Name="room_type" Relationship="Self.FK_course_room_type_1" FromRole="course" ToRole="room_type" />
     <NavigationProperty Name="room_type1" Relationship="Self.FK_course_room_type_2" FromRole="course" ToRole="room_type" />
     <NavigationProperty Name="sections" Relationship="Self.FK_section_course" FromRole="course" ToRole="section" />
+    <Property Name="class_length" Type="Double" />
   </EntityType>
   <EntityType Name="course_exam">
     <Key>
@@ -114,6 +115,7 @@
     <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="modified_on" Type="DateTime" Precision="0" />
     <NavigationProperty Name="room_type" Relationship="Self.FK_room_room_type" FromRole="room" ToRole="room_type" />
+    <NavigationProperty Name="sections" Relationship="ExamModels.FK_section_room" FromRole="room" ToRole="section" />
   </EntityType>
   <EntityType Name="room_type">
     <Key>
@@ -149,6 +151,10 @@
     <NavigationProperty Name="course" Relationship="Self.FK_section_course" FromRole="section" ToRole="course" />
     <NavigationProperty Name="faculty" Relationship="Self.FK_section_faculty" FromRole="section" ToRole="faculty" />
     <NavigationProperty Name="program" Relationship="Self.FK_section_program" FromRole="section" ToRole="program" />
+    <Property Name="class_weekday" Type="Int32" />
+    <Property Name="class_start_time" Type="Int32" />
+    <Property Name="room_id" Type="Int32" />
+    <NavigationProperty Name="room" Relationship="ExamModels.FK_section_room" FromRole="section" ToRole="room" />
   </EntityType>
   <EntityType Name="special_arrangement">
     <Key>
@@ -325,5 +331,21 @@
       <End Role="room_type" EntitySet="room_type" />
       <End Role="room" EntitySet="rooms" />
     </AssociationSet>
+    <AssociationSet Name="FK_section_room" Association="ExamModels.FK_section_room">
+      <End Role="room" EntitySet="rooms" />
+      <End Role="section" EntitySet="sections" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_section_room">
+    <End Type="ExamModels.room" Role="room" Multiplicity="0..1" />
+    <End Type="ExamModels.section" Role="section" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="room">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="section">
+        <PropertyRef Name="room_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

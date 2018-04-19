@@ -4,6 +4,7 @@
     <EntitySetMapping Name="courses">
       <EntityTypeMapping TypeName="ExamModels.course">
         <MappingFragment StoreEntitySet="course">
+          <ScalarProperty Name="class_length" ColumnName="class_length" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="code" ColumnName="code" />
           <ScalarProperty Name="title" ColumnName="title" />
@@ -129,6 +130,9 @@
     <EntitySetMapping Name="sections">
       <EntityTypeMapping TypeName="ExamModels.section">
         <MappingFragment StoreEntitySet="section">
+          <ScalarProperty Name="room_id" ColumnName="room_id" />
+          <ScalarProperty Name="class_start_time" ColumnName="class_start_time" />
+          <ScalarProperty Name="class_weekday" ColumnName="class_weekday" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="section_number" ColumnName="section_number" />
           <ScalarProperty Name="program_id" ColumnName="program_id" />

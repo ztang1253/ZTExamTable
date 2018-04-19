@@ -8,6 +8,7 @@ using ExamTable.Controllers.algorithm;
 using System.Web.Mvc;
 using ExamTable.Models;
 using ExamTable.Controllers.Utils;
+using System.Web;
 
 namespace ExamTable.Controllers
 {
@@ -251,11 +252,11 @@ namespace ExamTable.Controllers
         [HttpPost]
         public ActionResult ExportExcel()
         {
-            string fileName = "ExamTimetable";
+            string currentTime = DateTime.Now.ToString("yyyyMMddhhmmss");
+            string fileName = $"ExamTimetable{currentTime}.xlsx";
             string sheetName = "examTimetable";
             string folderPath = "c:\\ExamTimetableFiles";
-            string currentTime = DateTime.Now.ToString("yyyyMMddhhmmss");
-            string savedPath = $"{folderPath}\\{fileName}{currentTime}.xlsx";
+            string filepath = $"{folderPath}\\{fileName}";
 
             int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number - 7;
             var examList = db.exam_timetable.Where(e => e.version_number >= ver)
@@ -274,9 +275,26 @@ namespace ExamTable.Controllers
             //export
             ExportExcelUtil exportExcelUtil = new ExportExcelUtil();
             DataTable dataTable = GetTable(examList, sheetName);
-            exportExcelUtil.exportExcel(savedPath, dataTable);
-            TempData["showPath"] = $"Excel file is saved to: {folderPath}";
+            exportExcelUtil.exportExcel(filepath, dataTable);
+
+            TempData["filepath"] = filepath;
+
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult DownloadFile(string filepath)
+        {
+            byte[] filedata = System.IO.File.ReadAllBytes(filepath);
+            string contentType = MimeMapping.GetMimeMapping(filepath);
+
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = "ExamTimeTable.xlsx",
+                Inline = true,
+            };
+            Response.Headers.Add("Content-Disposition", cd.ToString());
+            return File(filedata, contentType);
         }
 
         private static DataTable GetTable(List<exam_timetable> examList, string tableName)

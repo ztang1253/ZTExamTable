@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Exam Timetable";
-    string showPath = (string)TempData["showPath"];
+    string filepath = (string)TempData["filepath"];
 
 }
 
@@ -22,9 +22,20 @@
         </div>
     </div>
 
-    @if (showPath != null)
+    @if (filepath != null)
     {
-        <div class="alert alert-info" role="alert" style="position:fixed;bottom:35px;right:60px;">@showPath</div>
+
+        @*<div class="alert alert-info" role="alert" style="position:fixed;bottom:35px;right:60px;">@showPath</div>*@
+        using (Html.BeginForm("DownloadFile", "ExamTimetable"))
+        {
+            @Html.Hidden("filepath", filepath);
+            <button type="submit" id="downloadFile" class="btn btn-primary"></button>
+            <script>
+                $(document).ready(function () {
+                    $('#downloadFile').trigger("click");
+                });
+            </script>
+        }
     }
 </p>
 <table class="table">

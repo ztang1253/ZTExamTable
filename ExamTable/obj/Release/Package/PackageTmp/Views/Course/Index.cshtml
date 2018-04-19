@@ -21,6 +21,9 @@
             @Html.DisplayNameFor(model => model.title)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.class_length)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.hours)
         </th>
         <th>
@@ -41,6 +44,9 @@
             @Html.DisplayFor(modelItem => item.title)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.class_length)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.hours)
         </td>
         <td>
@@ -49,8 +55,8 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.id }) @*|
-            @Html.ActionLink("Delete", "Delete", new { id = item.id })*@
+            @Html.ActionLink("Details", "Details", new { id = item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.id })
         </td>
     </tr>
 }

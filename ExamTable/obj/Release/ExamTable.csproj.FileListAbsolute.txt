@@ -90,3 +90,4 @@ C:\ExamTable\ZTExamTable\ExamTable\obj\Release\ExamTable.csprojResolveAssemblyRe
 C:\ExamTable\ZTExamTable\ExamTable\obj\Release\ExamTable.csproj.CoreCompileInputs.cache
 C:\ExamTable\ZTExamTable\ExamTable\obj\Release\ExamTable.dll
 C:\ExamTable\ZTExamTable\ExamTable\obj\Release\ExamTable.pdb
+C:\ExamTable\ZTExamTable\ExamTable\obj\Release\ExamTable.csproj.ResolveComReference.cache

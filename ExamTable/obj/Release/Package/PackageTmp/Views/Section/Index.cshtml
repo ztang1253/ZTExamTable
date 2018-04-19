@@ -33,6 +33,15 @@
             Faculty Name
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.class_weekday)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.class_start_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.room.name)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.program.title)
         </th>
         <th></th>
@@ -62,6 +71,15 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.faculty.first_name) @Html.DisplayFor(modelItem => item.faculty.last_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.class_weekday)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.class_start_time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.room.name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.program.title)
