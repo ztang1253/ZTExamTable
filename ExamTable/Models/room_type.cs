@@ -23,7 +23,7 @@ namespace ExamTable.Models
             this.course_exam = new HashSet<course_exam>();
             this.rooms = new HashSet<room>();
         }
-    
+
         [Display(Name = "Room Type ID")]
         public int id { get; set; }
 
@@ -47,7 +47,7 @@ namespace ExamTable.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<course> courses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

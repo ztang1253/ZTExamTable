@@ -53,12 +53,33 @@ namespace ExamTable.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,code,title,hours,required_room1_type_id,required_room2_type_id,is_deleted,created_by,created_on,modified_by,modified_on")] course course)
+        public ActionResult Create([Bind(Include = "id,code,title,hours,required_room1_type_id,required_room2_type_id,is_deleted,created_by,created_on,modified_by,modified_on,class_length")] course course)
         {
             if (ModelState.IsValid)
             {
                 course.created_on = DateTime.Now;
                 db.courses.Add(course);
+
+                course_exam tempCE = new course_exam();
+                tempCE.course_id = course.id;
+                tempCE.created_by = course.created_by;
+                tempCE.created_on = course.created_on;
+                tempCE.exam_length = course.class_length;
+                tempCE.have_final_exam = "YES";
+                tempCE.is_deleted = false;
+                tempCE.required_room_type_id = course.required_room1_type_id;
+                db.course_exam.Add(tempCE);
+
+                section tempS = new section();
+                tempS.course_id = course.id;
+                tempS.section_number = 1;
+                tempS.faculty = db.faculties.Find(10037);
+                tempS.student_enrolled = 30;
+                tempS.is_deleted = false;
+                tempS.created_by = course.created_by;
+                tempS.created_on = course.created_on;
+                db.sections.Add(tempS);
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -90,7 +111,7 @@ namespace ExamTable.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,code,title,hours,required_room1_type_id,required_room2_type_id,is_deleted,created_by,created_on,modified_by,modified_on")] course course)
+        public ActionResult Edit([Bind(Include = "id,code,title,hours,required_room1_type_id,required_room2_type_id,is_deleted,created_by,created_on,modified_by,modified_on,class_length")] course course)
         {
             if (ModelState.IsValid)
             {
@@ -171,29 +192,44 @@ namespace ExamTable.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             course course = db.courses.Find(id);
-            course.is_deleted = true;
+            //course.is_deleted = true;
 
-            // set this course-exam is_deleted = true
-            var tempCE = db.course_exam.Where(e => e.course_id == course.id);
-            if (tempCE.ToList().Count > 0)
+            //// set this course-exam is_deleted = true
+            //var tempCE = db.course_exam.Where(e => e.course_id == course.id);
+            //if (tempCE.ToList().Count > 0)
+            //{
+            //    foreach (var item in tempCE)
+            //    {
+            //        item.is_deleted = true;
+            //    }
+            //}
+
+            //// set this course - section is_deleted = true
+            //var tempCS = db.sections.Where(e => e.course_id == course.id);
+            //if (tempCS.ToList().Count > 0)
+            //{
+            //    foreach (var item in tempCS)
+            //    {
+            //        item.is_deleted = true;
+            //    }
+            //}
+
+            //course.modified_on = DateTime.Now;
+
+            
+
+            foreach (var s in db.sections.Where(s => s.course_id == course.id))
             {
-                foreach (var item in tempCE)
-                {
-                    item.is_deleted = true;
-                }
+                db.sections.Remove(s);
             }
 
-            // set this course - section is_deleted = true
-            var tempCS = db.sections.Where(e => e.course_id == course.id);
-            if (tempCS.ToList().Count > 0)
+            foreach (var item in db.course_exam.Where(ce => ce.course_id == course.id))
             {
-                foreach (var item in tempCS)
-                {
-                    item.is_deleted = true;
-                }
+                db.course_exam.Remove(item);
             }
 
-            course.modified_on = DateTime.Now;
+            db.courses.Remove(course);
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

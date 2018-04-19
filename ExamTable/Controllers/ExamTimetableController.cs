@@ -7,6 +7,7 @@ using System.Net;
 using ExamTable.Controllers.algorithm;
 using System.Web.Mvc;
 using ExamTable.Models;
+using ExamTable.Controllers.Utils;
 
 namespace ExamTable.Controllers
 {
@@ -131,7 +132,7 @@ namespace ExamTable.Controllers
         private string getTime(int start, int end, double length)
         {
             string tempTime = "";
-            if (length%1 != 0)
+            if (length % 1 != 0)
             {
                 tempTime = start.ToString() + ":00 - " + end.ToString() + ":30";
             }
@@ -244,6 +245,62 @@ namespace ExamTable.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        // Export table to excel
+        [HttpPost]
+        public ActionResult ExportExcel()
+        {
+            string fileName = "ExamTimetable";
+            string sheetName = "examTimetable";
+            string folderPath = "c:\\ExamTimetableFiles";
+            string currentTime = DateTime.Now.ToString("yyyyMMddhhmmss");
+            string savedPath = $"{folderPath}\\{fileName}{currentTime}.xlsx";
+
+            int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number - 7;
+            var examList = db.exam_timetable.Where(e => e.version_number >= ver)
+                    .OrderByDescending(e => e.version_number)
+                    .ThenBy(d => d.is_deleted)
+                    .ThenBy(c => c.course_hours)
+                    .ThenBy(w => w.weekday)
+                    .ThenBy(a => a.course_code)
+                    .ThenBy(c => c.section_number)
+                    .ToList();
+
+            //create folder
+            GenerateFolder gf = new GenerateFolder();
+            gf.CreateFolderIfMissing(folderPath);
+
+            //export
+            ExportExcelUtil exportExcelUtil = new ExportExcelUtil();
+            DataTable dataTable = GetTable(examList, sheetName);
+            exportExcelUtil.exportExcel(savedPath, dataTable);
+            TempData["showPath"] = $"Excel file is saved to: {folderPath}";
+            return RedirectToAction("Index");
+        }
+
+        private static DataTable GetTable(List<exam_timetable> examList, string tableName)
+        {
+            DataTable table = new DataTable(tableName);
+
+            table.Columns.Add("Course Code", typeof(string));
+            table.Columns.Add("Course Title", typeof(string));
+            table.Columns.Add("Level", typeof(int));
+            table.Columns.Add("Section", typeof(int));
+            table.Columns.Add("Exam Length", typeof(string));
+            table.Columns.Add("Weekday", typeof(string));
+            table.Columns.Add("Time", typeof(string));
+            table.Columns.Add("Room", typeof(string));
+            table.Columns.Add("Faculty", typeof(string));
+            table.Columns.Add("Proctor", typeof(string));
+
+            foreach (var exam in examList)
+            {
+                table.Rows.Add(exam.course_code, exam.course_title, exam.course_hours, exam.section_number, exam.exam_length, exam.weekday, exam.time, exam.room, exam.teacher_name, exam.proctor);
+            }
+
+            return table;
+
         }
     }
 }

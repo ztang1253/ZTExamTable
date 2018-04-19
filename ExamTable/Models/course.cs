@@ -39,6 +39,7 @@ namespace ExamTable.Models
         public Nullable<int> hours { get; set; }
 
         [Display(Name = "Required Room Type 1")]
+        [Required]
         public Nullable<int> required_room1_type_id { get; set; }
 
         [Display(Name = "Required Room Type 2")]
@@ -60,7 +61,7 @@ namespace ExamTable.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<course_exam> course_exam { get; set; }
 
@@ -77,5 +78,9 @@ namespace ExamTable.Models
                 return code + " - " + title;
             }
         }
+
+        [Display(Name = "Class Length")]
+        [Required]
+        public Nullable<double> class_length { get; set; }
     }
 }

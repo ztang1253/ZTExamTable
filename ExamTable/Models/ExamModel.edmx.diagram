@@ -23,6 +23,7 @@
         <AssociationConnector Association="ExamModels.FK_section_faculty" ManuallyRouted="false" />
         <AssociationConnector Association="ExamModels.FK_section_program" ManuallyRouted="false" />
         <AssociationConnector Association="ExamModels.FK_room_room_type" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamModels.FK_section_room" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

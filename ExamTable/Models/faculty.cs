@@ -70,7 +70,7 @@ namespace ExamTable.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<section> sections { get; set; }
 

@@ -53,9 +53,19 @@ namespace ExamTable.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
-    
+
+        [Display(Name = "Weekday")]
+        public Nullable<int> class_weekday { get; set; }
+
+        [Display(Name = "Start Time")]
+        public Nullable<int> class_start_time { get; set; }
+
+        [Display(Name = "Room")]
+        public Nullable<int> room_id { get; set; }
+
         public virtual course course { get; set; }
         public virtual faculty faculty { get; set; }
         public virtual program program { get; set; }
+        public virtual room room { get; set; }
     }
 }

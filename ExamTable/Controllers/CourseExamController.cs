@@ -183,29 +183,42 @@ namespace ExamTable.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             course_exam course_exam = db.course_exam.Find(id);
-            course_exam.is_deleted = true;
+            //course_exam.is_deleted = true;
 
-            // set all related course to deleted = true
-            var tempC = db.courses.Where(e => e.id == course_exam.course_id);
-            if (tempC.ToList().Count > 0)
+            //// set all related course to deleted = true
+            //var tempC = db.courses.Where(e => e.id == course_exam.course_id);
+            //if (tempC.ToList().Count > 0)
+            //{
+            //    foreach (var item in tempC)
+            //    {
+            //        item.is_deleted = true;
+            //    }
+            //}
+
+            //// set all related sections deleted = true
+            //var tempS = db.sections.Where(e => e.course_id == course_exam.course_id);
+            //if (tempS.ToList().Count > 0)
+            //{
+            //    foreach (var item in tempS)
+            //    {
+            //        item.is_deleted = true;
+            //    }
+            //}
+
+            //course_exam.modified_on = DateTime.Now;
+
+            foreach (var item in db.sections.Where(s => s.course_id == course_exam.course_id))
             {
-                foreach (var item in tempC)
-                {
-                    item.is_deleted = true;
-                }
+                db.sections.Remove(item);
             }
 
-            // set all related sections deleted = true
-            var tempS = db.sections.Where(e => e.course_id == course_exam.course_id);
-            if (tempS.ToList().Count > 0)
+            foreach (var c in db.courses.Where(c => c.id == course_exam.course_id))
             {
-                foreach (var item in tempS)
-                {
-                    item.is_deleted = true;
-                }
+                db.courses.Remove(c);
             }
 
-            course_exam.modified_on = DateTime.Now;
+            db.course_exam.Remove(course_exam);
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

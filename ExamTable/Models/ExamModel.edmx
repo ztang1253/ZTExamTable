@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ExamModels.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ExamModels.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="course">
           <Key>
             <PropertyRef Name="id" />
@@ -20,6 +20,7 @@
           <Property Name="created_on" Type="date" />
           <Property Name="modified_by" Type="nvarchar" MaxLength="50" />
           <Property Name="modified_on" Type="date" />
+          <Property Name="class_length" Type="float" />
         </EntityType>
         <EntityType Name="course_exam">
           <Key>
@@ -138,6 +139,9 @@
           <Property Name="created_on" Type="date" />
           <Property Name="modified_by" Type="nvarchar" MaxLength="50" />
           <Property Name="modified_on" Type="date" />
+          <Property Name="class_weekday" Type="int" />
+          <Property Name="class_start_time" Type="int" />
+          <Property Name="room_id" Type="int" />
         </EntityType>
         <EntityType Name="special_arrangement">
           <Key>
@@ -271,6 +275,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_section_room">
+          <End Role="room" Type="Self.room" Multiplicity="0..1" />
+          <End Role="section" Type="Self.section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="room">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="section">
+              <PropertyRef Name="room_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ExamModelsStoreContainer">
           <EntitySet Name="course" EntityType="Self.course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="course_exam" EntityType="Self.course_exam" Schema="dbo" store:Type="Tables" />
@@ -314,9 +330,12 @@
             <End Role="program" EntitySet="program" />
             <End Role="section" EntitySet="section" />
           </AssociationSet>
+          <AssociationSet Name="FK_section_room" Association="Self.FK_section_room">
+            <End Role="room" EntitySet="room" />
+            <End Role="section" EntitySet="section" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ExamModels" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -339,6 +358,7 @@
           <NavigationProperty Name="room_type" Relationship="Self.FK_course_room_type_1" FromRole="course" ToRole="room_type" />
           <NavigationProperty Name="room_type1" Relationship="Self.FK_course_room_type_2" FromRole="course" ToRole="room_type" />
           <NavigationProperty Name="sections" Relationship="Self.FK_section_course" FromRole="course" ToRole="section" />
+          <Property Name="class_length" Type="Double" />
         </EntityType>
         <EntityType Name="course_exam">
           <Key>
@@ -434,6 +454,7 @@
           <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="modified_on" Type="DateTime" Precision="0" />
           <NavigationProperty Name="room_type" Relationship="Self.FK_room_room_type" FromRole="room" ToRole="room_type" />
+          <NavigationProperty Name="sections" Relationship="ExamModels.FK_section_room" FromRole="room" ToRole="section" />
         </EntityType>
         <EntityType Name="room_type">
           <Key>
@@ -469,6 +490,10 @@
           <NavigationProperty Name="course" Relationship="Self.FK_section_course" FromRole="section" ToRole="course" />
           <NavigationProperty Name="faculty" Relationship="Self.FK_section_faculty" FromRole="section" ToRole="faculty" />
           <NavigationProperty Name="program" Relationship="Self.FK_section_program" FromRole="section" ToRole="program" />
+          <Property Name="class_weekday" Type="Int32" />
+          <Property Name="class_start_time" Type="Int32" />
+          <Property Name="room_id" Type="Int32" />
+          <NavigationProperty Name="room" Relationship="ExamModels.FK_section_room" FromRole="section" ToRole="room" />
         </EntityType>
         <EntityType Name="special_arrangement">
           <Key>
@@ -645,7 +670,23 @@
             <End Role="room_type" EntitySet="room_type" />
             <End Role="room" EntitySet="rooms" />
           </AssociationSet>
+          <AssociationSet Name="FK_section_room" Association="ExamModels.FK_section_room">
+            <End Role="room" EntitySet="rooms" />
+            <End Role="section" EntitySet="sections" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_section_room">
+          <End Type="ExamModels.room" Role="room" Multiplicity="0..1" />
+          <End Type="ExamModels.section" Role="section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="room">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="section">
+              <PropertyRef Name="room_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -655,6 +696,7 @@
           <EntitySetMapping Name="courses">
             <EntityTypeMapping TypeName="ExamModels.course">
               <MappingFragment StoreEntitySet="course">
+                <ScalarProperty Name="class_length" ColumnName="class_length" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="title" ColumnName="title" />
@@ -780,6 +822,9 @@
           <EntitySetMapping Name="sections">
             <EntityTypeMapping TypeName="ExamModels.section">
               <MappingFragment StoreEntitySet="section">
+                <ScalarProperty Name="room_id" ColumnName="room_id" />
+                <ScalarProperty Name="class_start_time" ColumnName="class_start_time" />
+                <ScalarProperty Name="class_weekday" ColumnName="class_weekday" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="section_number" ColumnName="section_number" />
                 <ScalarProperty Name="program_id" ColumnName="program_id" />

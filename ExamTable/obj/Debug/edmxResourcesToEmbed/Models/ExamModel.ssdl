@@ -15,6 +15,7 @@
     <Property Name="created_on" Type="date" />
     <Property Name="modified_by" Type="nvarchar" MaxLength="50" />
     <Property Name="modified_on" Type="date" />
+    <Property Name="class_length" Type="float" />
   </EntityType>
   <EntityType Name="course_exam">
     <Key>
@@ -133,6 +134,9 @@
     <Property Name="created_on" Type="date" />
     <Property Name="modified_by" Type="nvarchar" MaxLength="50" />
     <Property Name="modified_on" Type="date" />
+    <Property Name="class_weekday" Type="int" />
+    <Property Name="class_start_time" Type="int" />
+    <Property Name="room_id" Type="int" />
   </EntityType>
   <EntityType Name="special_arrangement">
     <Key>
@@ -266,6 +270,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_section_room">
+    <End Role="room" Type="Self.room" Multiplicity="0..1" />
+    <End Role="section" Type="Self.section" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="room">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="section">
+        <PropertyRef Name="room_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="ExamModelsStoreContainer">
     <EntitySet Name="course" EntityType="Self.course" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="course_exam" EntityType="Self.course_exam" Schema="dbo" store:Type="Tables" />
@@ -307,6 +323,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_section_program" Association="Self.FK_section_program">
       <End Role="program" EntitySet="program" />
+      <End Role="section" EntitySet="section" />
+    </AssociationSet>
+    <AssociationSet Name="FK_section_room" Association="Self.FK_section_room">
+      <End Role="room" EntitySet="room" />
       <End Role="section" EntitySet="section" />
     </AssociationSet>
   </EntityContainer>

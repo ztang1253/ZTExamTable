@@ -50,6 +50,8 @@ namespace ExamTable.Controllers
             ViewBag.course_id = new SelectList(db.courses.Where(p => p.is_deleted == false).OrderBy(o => o.code), "id", "courseDropdown");
             ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName");
             ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title");
+            ViewBag.room_id = new SelectList(db.rooms.Where(p => p.is_deleted == false).OrderBy(o=>o.name), "id", "name");
+
             return View();
         }
 
@@ -58,7 +60,7 @@ namespace ExamTable.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,section_number,program_id,course_id,student_enrolled,faculty_id,is_deleted,created_by,created_on,modified_by,modified_on")] section section)
+        public ActionResult Create([Bind(Include = "id,section_number,program_id,course_id,student_enrolled,faculty_id,is_deleted,created_by,created_on,modified_by,modified_on,class_weekday,class_start_time,room_id")] section section)
         {
             string err = "";
             var tempList = db.sections.Where(s => s.course_id == section.course_id);
@@ -89,6 +91,7 @@ namespace ExamTable.Controllers
                     "id", "courseDropdown", section.course_id);
             ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName", section.faculty_id);
             ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title", section.program_id);
+            ViewBag.room_id = new SelectList(db.rooms.Where(c => c.is_deleted == false).OrderBy(o => o.name), "id", "name", section.room_id);
             ViewBag.Error = err;
             return View(section);
         }
@@ -110,6 +113,7 @@ namespace ExamTable.Controllers
                         "id", "courseDropdown", section.course_id);
             ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName", section.faculty_id);
             ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title", section.program_id);
+            ViewBag.room_id = new SelectList(db.rooms.Where(c => c.is_deleted == false).OrderBy(o => o.name), "id", "name", section.room_id);
 
             return View(section);
         }
@@ -119,7 +123,7 @@ namespace ExamTable.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,section_number,program_id,course_id,student_enrolled,faculty_id,is_deleted,created_by,created_on,modified_by,modified_on")] section section)
+        public ActionResult Edit([Bind(Include = "id,section_number,program_id,course_id,student_enrolled,faculty_id,is_deleted,created_by,created_on,modified_by,modified_on,class_weekday,class_start_time,room_id")] section section)
         {
             if (ModelState.IsValid)
             {
@@ -157,6 +161,8 @@ namespace ExamTable.Controllers
             ViewBag.course_id = new SelectList(db.courses.Where(c => c.is_deleted == false || c.id == section.course_id).OrderBy(o => o.code), "id", "courseDropdown", section.course_id);
             ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false), "id", "last_name", section.faculty_id);
             ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title", section.program_id);
+            ViewBag.room_id = new SelectList(db.rooms.Where(c => c.is_deleted == false).OrderBy(o => o.name), "id", "name", section.room_id);
+
             return View(section);
         }
 

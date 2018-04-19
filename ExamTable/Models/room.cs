@@ -15,6 +15,11 @@ namespace ExamTable.Models
 
     public partial class room
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public room()
+        {
+            this.sections = new HashSet<section>();
+        }
         [Display(Name = "ID")]
         public int id { get; set; }
 
@@ -46,7 +51,9 @@ namespace ExamTable.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "Modified On")]
         public Nullable<System.DateTime> modified_on { get; set; }
-    
+
         public virtual room_type room_type { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<section> sections { get; set; }
     }
 }

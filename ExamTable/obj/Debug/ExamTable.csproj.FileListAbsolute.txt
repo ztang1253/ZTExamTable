@@ -86,7 +86,8 @@ C:\ExamTable\ZTExamTable\ExamTable\bin\Microsoft.AI.DependencyCollector.xml
 C:\ExamTable\ZTExamTable\ExamTable\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\ExamTable\ZTExamTable\ExamTable\bin\Microsoft.AI.WindowsServer.xml
 C:\ExamTable\ZTExamTable\ExamTable\bin\Microsoft.AI.Web.xml
-C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.csprojResolveAssemblyReference.cache
 C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.csproj.CoreCompileInputs.cache
 C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.dll
 C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.pdb
+C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.csprojResolveAssemblyReference.cache
+C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.csproj.ResolveComReference.cache
