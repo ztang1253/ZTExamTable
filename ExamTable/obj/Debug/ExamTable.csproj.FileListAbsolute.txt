@@ -89,5 +89,5 @@ C:\ExamTable\ZTExamTable\ExamTable\bin\Microsoft.AI.Web.xml
 C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.csproj.CoreCompileInputs.cache
 C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.dll
 C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.pdb
-C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.csprojResolveAssemblyReference.cache
 C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.csproj.ResolveComReference.cache
+C:\ExamTable\ZTExamTable\ExamTable\obj\Debug\ExamTable.csprojResolveAssemblyReference.cache

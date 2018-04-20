@@ -19,7 +19,7 @@ namespace ExamTable.Controllers
         // GET: ExamTimetable
         public ActionResult Index()
         {
-            int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number - 7;
+            int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number; // - 7;
             return View(db.exam_timetable.Where(e => e.version_number >= ver)
                     .OrderByDescending(e => e.version_number)
                     .ThenBy(d => d.is_deleted)
@@ -248,6 +248,38 @@ namespace ExamTable.Controllers
             base.Dispose(disposing);
         }
 
+        //// Export table to excel
+        //[HttpPost]
+        //public ActionResult ExportExcel()
+        //{
+        //    string fileName = "ExamTimetable";
+        //    string sheetName = "examTimetable";
+        //    string folderPath = "C:\\ExamTimetable";
+        //    string currentTime = DateTime.Now.ToString("yyyyMMddhhmmss");
+        //    string savedPath = $"{folderPath}\\{fileName}{currentTime}.xlsx";
+
+        //    int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number - 7;
+        //    var examList = db.exam_timetable.Where(e => e.version_number >= ver)
+        //            .OrderByDescending(e => e.version_number)
+        //            .ThenBy(d => d.is_deleted)
+        //            .ThenBy(c => c.course_hours)
+        //            .ThenBy(w => w.weekday)
+        //            .ThenBy(a => a.course_code)
+        //            .ThenBy(c => c.section_number)
+        //            .ToList();
+
+        //    //create folder
+        //    GenerateFolder gf = new GenerateFolder();
+        //    gf.CreateFolderIfMissing(folderPath);
+
+        //    //export
+        //    ExportExcelUtil exportExcelUtil = new ExportExcelUtil();
+        //    DataTable dataTable = GetTable(examList, sheetName);
+        //    exportExcelUtil.exportExcel(savedPath, dataTable);
+        //    TempData["showPath"] = $"Excel file is saved to: {folderPath}";
+        //    return RedirectToAction("Index");
+        //}
+
         // Export table to excel
         [HttpPost]
         public ActionResult ExportExcel()
@@ -258,7 +290,7 @@ namespace ExamTable.Controllers
             string folderPath = "c:\\ExamTimetableFiles";
             string filepath = $"{folderPath}\\{fileName}";
 
-            int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number - 7;
+            int ver = (int)db.exam_timetable.OrderByDescending(e => e.id).First().version_number; // - 7;
             var examList = db.exam_timetable.Where(e => e.version_number >= ver)
                     .OrderByDescending(e => e.version_number)
                     .ThenBy(d => d.is_deleted)

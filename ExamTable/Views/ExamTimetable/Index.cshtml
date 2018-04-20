@@ -2,11 +2,32 @@
 
 @{
     ViewBag.Title = "Exam Timetable";
+    //string showPath = (string)TempData["showPath"];
     string filepath = (string)TempData["filepath"];
 
 }
 
 <h2>Exam Timetable</h2>
+
+@*<p>
+        <div class="row">
+            <div class="col-md-6">@Html.ActionLink("Create New", "Create")</div>
+            <div class="col-md-6" style="text-align:right;">
+                @using (Html.BeginForm("ExportExcel", "ExamTimetable"))
+                {
+                    <button type="submit" id="exportBtn" data-loading-text="Waiting For Export..." class="btn btn-primary" autocomplete="off">
+                        <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
+                        Export table to Excel
+                    </button>
+                }
+            </div>
+        </div>
+
+        @if (showPath != null)
+        {
+            <div class="alert alert-info" role="alert" style="position:fixed;bottom:35px;right:60px;">@showPath</div>
+        }
+    </p>*@
 
 <p>
     <div class="row">
@@ -22,21 +43,24 @@
         </div>
     </div>
 
-    @if (filepath != null)
-    {
-
-        @*<div class="alert alert-info" role="alert" style="position:fixed;bottom:35px;right:60px;">@showPath</div>*@
-        using (Html.BeginForm("DownloadFile", "ExamTimetable"))
+    <span hidden>
+        @if (filepath != null)
         {
-            @Html.Hidden("filepath", filepath);
-            <button type="submit" id="downloadFile" class="btn btn-primary"></button>
-            <script>
-                $(document).ready(function () {
-                    $('#downloadFile').trigger("click");
-                });
-            </script>
+
+            using (Html.BeginForm("DownloadFile", "ExamTimetable"))
+            {
+                @Html.Hidden("filepath", filepath);
+                <button type="submit" id="downloadFile" class="btn btn-primary"></button>
+                <script>
+                    $(document).ready(function () {
+                        $('#downloadFile').trigger("click");
+                    });
+                </script>
+            }
         }
-    }
+
+    </span>
+
 </p>
 <table class="table">
     <tr>
@@ -205,6 +229,6 @@
                 var $btn = $(this).button('loading')
                 // business logic...
             });
-         });
+        });
     </script>
-    }
+}

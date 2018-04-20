@@ -71,6 +71,7 @@ namespace ExamTable.Controllers
                 db.course_exam.Add(tempCE);
 
                 section tempS = new section();
+                tempS.program_id = 1;
                 tempS.course_id = course.id;
                 tempS.section_number = 1;
                 tempS.faculty = db.faculties.Find(10037);
