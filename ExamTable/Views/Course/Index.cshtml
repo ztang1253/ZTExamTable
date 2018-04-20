@@ -43,8 +43,13 @@
         <td>
             @Html.DisplayFor(modelItem => item.title)
         </td>
+
         <td>
-            @Html.DisplayFor(modelItem => item.class_length)
+            @{ double? length = item.class_length;}
+            @if (length != null)
+            {
+                <span>@length hours</span>
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.hours)

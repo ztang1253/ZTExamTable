@@ -26,6 +26,12 @@ namespace ExamTable.Controllers
                 .ThenBy(t => t.course.code)
                 .ThenBy(i => i.id)
                 .ThenBy(s => s.section_number);
+
+            var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>()
+                           .Select(dow => new { Value = (int)dow - 1, Text = dow.ToString() })
+                           .ToList();
+            ViewBag.class_weekday = new SelectList(weekDays, "Value", "Text");
+
             return View(sections.ToList());
         }
 
@@ -41,6 +47,12 @@ namespace ExamTable.Controllers
             {
                 return HttpNotFound();
             }
+
+            var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>()
+                          .Select(dow => new { Value = (int)dow - 1, Text = dow.ToString() })
+                          .ToList();
+            ViewBag.class_weekday = new SelectList(weekDays, "Value", "Text", section.class_weekday);
+
             return View(section);
         }
 
@@ -51,6 +63,11 @@ namespace ExamTable.Controllers
             ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName");
             ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title");
             ViewBag.room_id = new SelectList(db.rooms.Where(p => p.is_deleted == false).OrderBy(o=>o.name), "id", "name");
+
+            var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>()
+                            .Select(dow => new { Value = (int)dow - 1, Text = dow.ToString() })
+                            .ToList();
+            ViewBag.class_weekday = new SelectList(weekDays, "Value", "Text", 0);
 
             return View();
         }
@@ -93,6 +110,11 @@ namespace ExamTable.Controllers
             ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title", section.program_id);
             ViewBag.room_id = new SelectList(db.rooms.Where(c => c.is_deleted == false).OrderBy(o => o.name), "id", "name", section.room_id);
             ViewBag.Error = err;
+
+            var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>()
+                            .Select(dow => new { Value = (int)dow - 1, Text = dow.ToString() })
+                            .ToList();
+            ViewBag.class_weekday = new SelectList(weekDays, "Value", "Text", section.class_weekday);
             return View(section);
         }
 
@@ -114,6 +136,11 @@ namespace ExamTable.Controllers
             ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName", section.faculty_id);
             ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title", section.program_id);
             ViewBag.room_id = new SelectList(db.rooms.Where(c => c.is_deleted == false).OrderBy(o => o.name), "id", "name", section.room_id);
+
+            var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>()
+                            .Select(dow => new { Value = (int)dow - 1, Text = dow.ToString() })
+                            .ToList();
+            ViewBag.class_weekday = new SelectList(weekDays, "Value", "Text", section.class_weekday);
 
             return View(section);
         }
@@ -163,6 +190,11 @@ namespace ExamTable.Controllers
             ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title", section.program_id);
             ViewBag.room_id = new SelectList(db.rooms.Where(c => c.is_deleted == false).OrderBy(o => o.name), "id", "name", section.room_id);
 
+            var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>()
+                            .Select(dow => new { Value = (int)dow - 1, Text = dow.ToString() })
+                            .ToList();
+            ViewBag.class_weekday = new SelectList(weekDays, "Value", "Text", section.class_weekday);
+
             return View(section);
         }
 
@@ -178,6 +210,11 @@ namespace ExamTable.Controllers
             {
                 return HttpNotFound();
             }
+            var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>()
+                           .Select(dow => new { Value = (int)dow - 1, Text = dow.ToString() })
+                           .ToList();
+            ViewBag.class_weekday = new SelectList(weekDays, "Value", "Text", section.class_weekday);
+
             return View(section);
         }
 

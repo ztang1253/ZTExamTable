@@ -73,23 +73,73 @@
             @Html.DisplayFor(modelItem => item.faculty.first_name) @Html.DisplayFor(modelItem => item.faculty.last_name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.class_weekday)
+            @{ int? tempW = item.class_weekday;}
+            @if (tempW != null)
+        {
+            switch (tempW)
+            {
+                case 0:
+                    <span>Monday</span>;
+                break;
+            case 1:
+                <span>Tuesday</span>;
+            break;
+        case 2:
+            <span>Wednesday</span>;
+        break;
+    case 3:
+        <span>Thursday</span>;
+    break;
+case 4:
+    <span>Friday</span>;
+break;
+}
+}
+
+
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.class_start_time)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.room.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.program.title)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.id })
-        </td>
-    </tr>
+
+            @{ int? tempS = item.class_start_time;}
+            @if (tempS != null)
+        {
+            double? course_length = item.course.class_length;
+            if (course_length != null)
+            {
+                int tempD = (int)(course_length * 10);
+                if (tempD % 2 == 0)
+                {
+                    int endTime = (int)tempS + (int)course_length;
+                <span>
+                    @Html.DisplayFor(modelItem => item.class_start_time):00 - @endTime:00
+                </span>
+        }
+        else
+        {
+            int endTime = (int)tempS + (int)(course_length - 0.5);
+            <span>
+                @Html.DisplayFor(modelItem => item.class_start_time):00 - @endTime:30
+            </span>
+    }
+}
+
+}
+            </td>
+
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.room.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.program.title)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
 }
 
 </table>

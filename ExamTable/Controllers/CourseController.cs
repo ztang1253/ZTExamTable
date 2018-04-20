@@ -45,6 +45,24 @@ namespace ExamTable.Controllers
         {
             ViewBag.required_room1_type_id = new SelectList(db.room_type, "id", "type");
             ViewBag.required_room2_type_id = new SelectList(db.room_type, "id", "type");
+
+            ViewBag.required_room_type_id = new SelectList(db.room_type.Where(c => c.is_deleted == false), "id", "type");
+            ViewBag.course_id = new SelectList(db.courses.Where(p => !(db.course_exam.Any(p2 => p2.course_id == p.id)) &&
+                    p.is_deleted == false).OrderBy(o => o.code), "id", "courseDropdown");
+
+            ViewBag.course_id = new SelectList(db.courses.Where(p => p.is_deleted == false).OrderBy(o => o.code), "id", "courseDropdown");
+            ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName", 10015);
+            ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title");
+            ViewBag.room_id = new SelectList(db.rooms.Where(p => p.is_deleted == false).OrderBy(o => o.name), "id", "name", 8);
+
+            var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>()
+                            .Select(dow => new { Value = (int)dow - 1, Text = dow.ToString() })
+                            .ToList();
+            ViewBag.class_weekday = new SelectList(weekDays, "Value", "Text", 0);
+
+
+
+
             return View();
         }
 
@@ -53,7 +71,8 @@ namespace ExamTable.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,code,title,hours,required_room1_type_id,required_room2_type_id,is_deleted,created_by,created_on,modified_by,modified_on,class_length")] course course)
+        public ActionResult Create([Bind(Include = "id,code,title,hours,class_length,have_final_exam,exam_length,program_id," +
+            "is_deleted,created_by,class_weekday,class_start_time,room_id,faculty_id,program_id")] course course)
         {
             if (ModelState.IsValid)
             {
@@ -64,17 +83,21 @@ namespace ExamTable.Controllers
                 tempCE.course_id = course.id;
                 tempCE.created_by = course.created_by;
                 tempCE.created_on = course.created_on;
-                tempCE.exam_length = course.class_length;
-                tempCE.have_final_exam = "YES";
+                tempCE.exam_length = course.exam_length;
+                tempCE.have_final_exam = course.have_final_exam;
+                tempCE.final_exam_note = course.final_exam_note;
                 tempCE.is_deleted = false;
-                tempCE.required_room_type_id = course.required_room1_type_id;
+                tempCE.required_room_type_id = db.rooms.Find(course.room_id).room_type_id;
                 db.course_exam.Add(tempCE);
 
                 section tempS = new section();
-                tempS.program_id = 1;
+                tempS.program_id = course.program_id;
                 tempS.course_id = course.id;
                 tempS.section_number = 1;
-                tempS.faculty = db.faculties.Find(10037);
+                tempS.faculty_id = course.faculty_id;
+                tempS.class_weekday = course.class_weekday;
+                tempS.class_start_time = course.class_start_time;
+                tempS.room_id = course.room_id;
                 tempS.student_enrolled = 30;
                 tempS.is_deleted = false;
                 tempS.created_by = course.created_by;
@@ -87,6 +110,24 @@ namespace ExamTable.Controllers
 
             ViewBag.required_room1_type_id = new SelectList(db.room_type, "id", "type", course.required_room1_type_id);
             ViewBag.required_room2_type_id = new SelectList(db.room_type, "id", "type", course.required_room2_type_id);
+
+            ViewBag.required_room_type_id = new SelectList(db.room_type.Where(c => c.is_deleted == false), "id", "type");
+            ViewBag.course_id = new SelectList(db.courses.Where(p => !(db.course_exam.Any(p2 => p2.course_id == p.id)) &&
+                    p.is_deleted == false).OrderBy(o => o.code), "id", "courseDropdown");
+
+            ViewBag.course_id = new SelectList(db.courses.Where(p => p.is_deleted == false).OrderBy(o => o.code), "id", "courseDropdown");
+            ViewBag.faculty_id = new SelectList(db.faculties.Where(c => c.is_deleted == false).OrderBy(o => o.first_name), "id", "fullName", 10015);
+            ViewBag.program_id = new SelectList(db.programs.Where(c => c.is_deleted == false), "id", "title");
+            ViewBag.room_id = new SelectList(db.rooms.Where(p => p.is_deleted == false).OrderBy(o => o.name), "id", "name", 8);
+
+            var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>()
+                            .Select(dow => new { Value = (int)dow - 1, Text = dow.ToString() })
+                            .ToList();
+            ViewBag.class_weekday = new SelectList(weekDays, "Value", "Text", 0);
+
+
+
+
             return View(course);
         }
 
@@ -217,7 +258,7 @@ namespace ExamTable.Controllers
 
             //course.modified_on = DateTime.Now;
 
-            
+
 
             foreach (var s in db.sections.Where(s => s.course_id == course.id))
             {

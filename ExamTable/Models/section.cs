@@ -57,7 +57,7 @@ namespace ExamTable.Models
         [Display(Name = "Weekday")]
         public Nullable<int> class_weekday { get; set; }
 
-        [Display(Name = "Start Time")]
+        [Display(Name = "Time")]
         public Nullable<int> class_start_time { get; set; }
 
         [Display(Name = "Room")]

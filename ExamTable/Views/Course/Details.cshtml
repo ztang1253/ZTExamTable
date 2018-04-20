@@ -31,7 +31,11 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.class_length)
+            @{ double? length = Model.class_length;}
+            @if (length != null)
+    {
+        <span>@length hours</span>
+}
         </dd>
 
         <dt>
