@@ -60,7 +60,11 @@
             @Html.DisplayFor(modelItem => item.have_final_exam)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.exam_length)
+            @{ double? length = item.exam_length;}
+            @if (length != null)
+    {
+        <span>@length hours</span>
+}
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.room_type.type)

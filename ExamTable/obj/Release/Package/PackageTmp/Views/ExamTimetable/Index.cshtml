@@ -10,26 +10,6 @@
 <h2>Exam Timetable</h2>
 
 @*<p>
-    <div class="row">
-        <div class="col-md-6">@Html.ActionLink("Create New", "Create")</div>
-        <div class="col-md-6" style="text-align:right;">
-            @using (Html.BeginForm("ExportExcel", "ExamTimetable"))
-            {
-                <button type="submit" id="exportBtn" data-loading-text="Waiting For Export..." class="btn btn-primary" autocomplete="off">
-                    <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
-                    Export table to Excel
-                </button>
-            }
-        </div>
-    </div>
-
-    @if (showPath != null)
-    {
-        <div class="alert alert-info" role="alert" style="position:fixed;bottom:35px;right:60px;">@showPath</div>
-    }
-</p>*@
-
-<p>
         <div class="row">
             <div class="col-md-6">@Html.ActionLink("Create New", "Create")</div>
             <div class="col-md-6" style="text-align:right;">
@@ -43,6 +23,27 @@
             </div>
         </div>
 
+        @if (showPath != null)
+        {
+            <div class="alert alert-info" role="alert" style="position:fixed;bottom:35px;right:60px;">@showPath</div>
+        }
+    </p>*@
+
+<p>
+    <div class="row">
+        <div class="col-md-6">@Html.ActionLink("Create New", "Create")</div>
+        <div class="col-md-6" style="text-align:right;">
+            @using (Html.BeginForm("ExportExcel", "ExamTimetable"))
+            {
+                <button type="submit" id="exportBtn" data-loading-text="Waiting For Export..." class="btn btn-primary" autocomplete="off">
+                    <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
+                    Export table to Excel
+                </button>
+            }
+        </div>
+    </div>
+
+    <span hidden>
         @if (filepath != null)
         {
 
@@ -57,7 +58,10 @@
                 </script>
             }
         }
-    </p>
+
+    </span>
+
+</p>
 <table class="table">
     <tr>
         <th>

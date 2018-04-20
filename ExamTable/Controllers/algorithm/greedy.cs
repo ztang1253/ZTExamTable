@@ -649,6 +649,12 @@ namespace ExamTable.Controllers.algorithm
                     ret.Add(s);
             }
 
+            ret.Sort(
+                delegate (SpecialEntity s1, SpecialEntity s2)
+                {
+                    return s1.sessionId - s2.sessionId;
+                });
+
             return ret;
         }
 
@@ -673,7 +679,18 @@ namespace ExamTable.Controllers.algorithm
                     if (r.roomType == course.requiredRoomType && getConflictTimeData(r.occupied, timeData) == null)
                     {
                         room = r;
-                        break;
+                        foreach (SpecialEntity sot in specialsOfThisCourse)
+                        {
+                            if (sot.roomId <= 0) continue;
+                            if (r.roomId == sot.roomId)
+                            {
+                                room = null;
+                                break;
+                            }
+                        }
+
+                        if (room != null)
+                            break;
                     }
                 }
             }
@@ -714,7 +731,6 @@ namespace ExamTable.Controllers.algorithm
                 --sessionsThisRoom;
             }
 
-            int sessionFacultyId = -1;
             for (int i = 0; i < sessionsThisRoom; ++sessionIndex)
             {
                 if (sessionIndex >= remainSessions.Count)
@@ -733,21 +749,7 @@ namespace ExamTable.Controllers.algorithm
                 if (!sessionInSpecial)
                 {
                     exam.sessionIds.Add(remainSessions[sessionIndex]);
-                    if (sessionFacultyId <= 0) sessionFacultyId = remainSessions[sessionIndex].facultyId;
                     ++i;
-                }
-            }
-
-            ProtorEntity sessionFaculty = null;
-            if (sessionFacultyId > 0)
-            {
-                foreach (ProtorEntity pe in allProtor)
-                {
-                    if (pe.protorId == sessionFacultyId)
-                    {
-                        sessionFaculty = pe;
-                        break;
-                    }
                 }
             }
 
@@ -773,25 +775,56 @@ namespace ExamTable.Controllers.algorithm
             }
             else
             {
-                bool hasProtor = false;
-                if (sessionFaculty != null)
-                {
-                    if (getConflictTimeData(sessionFaculty.occupied, timeData) == null)
-                    {
-                        exam.protorId = sessionFaculty.protorId;
-                        sessionFaculty.arrangeExam(timeData);
-                        hasProtor = true;
-                    }
-                }
-
-                if (!hasProtor)
+                ProtorEntity sessionFaculty = null;
+                foreach (SessionEntity ss in exam.sessionIds)
                 {
                     foreach (ProtorEntity pe in allProtor)
                     {
-                        if (getConflictTimeData(pe.occupied, timeData) == null && pe.protorId != special.protorId)
+                        if (ss.facultyId == pe.protorId)
                         {
-                            exam.protorId = pe.protorId;
-                            pe.arrangeExam(timeData);
+                            sessionFaculty = pe;
+                            break;
+                        }
+                    }
+
+                    if (sessionFaculty != null)
+                    {
+                        if (getConflictTimeData(sessionFaculty.occupied, timeData) == null)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            sessionFaculty = null;
+                        }
+                    }
+                }
+
+                if (sessionFaculty != null)
+                {
+                    exam.protorId = sessionFaculty.protorId;
+                    sessionFaculty.arrangeExam(timeData);
+                }
+                else
+                {
+                    foreach (ProtorEntity pe in allProtor)
+                    {
+                        sessionFaculty = pe;
+                        foreach (SpecialEntity e in specialsOfThisCourse)
+                        {
+                            if (sessionFaculty.protorId == e.protorId)
+                            {
+                                sessionFaculty = null;
+                                break;
+                            }
+                        }
+
+                        if (sessionFaculty == null) continue;
+
+                        if (getConflictTimeData(sessionFaculty.occupied, timeData) == null && sessionFaculty.protorId != special.protorId)
+                        {
+                            exam.protorId = sessionFaculty.protorId;
+                            sessionFaculty.arrangeExam(timeData);
                             break;
                         }
                     }
