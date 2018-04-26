@@ -27,7 +27,6 @@ namespace ExamTable.Models
         public string have_final_exam { get; set; }
 
         [Display(Name = "Exam Length")]
-        [Required]
         public Nullable<double> exam_length { get; set; }
 
         [Display(Name = "Required Room Type")]

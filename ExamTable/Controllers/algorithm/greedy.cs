@@ -265,10 +265,15 @@ namespace ExamTable.Controllers.algorithm
     public class GreedyAlgo
     {
         public const bool RANDOM_ORDER = true; // use random order or defined order for exam table
-        public const int MIN_AM_HOUR = 900; // 9 o'clock
-        public const int MAX_AM_HOUR = 1200; // 12 o'clock
+        //public const int MIN_AM_HOUR = 900; // 9 o'clock
+        //public const int MAX_AM_HOUR = 1200; // 12 o'clock
+        //public const int MIN_PM_HOUR = 1300; // 13 o'clock
+        //public const int MAX_PM_HOUR = 1700; // 17 o'clock
+
+        public const int MIN_AM_HOUR = 800; // 9 o'clock
+        public const int MAX_AM_HOUR = 1300; // 12 o'clock
         public const int MIN_PM_HOUR = 1300; // 13 o'clock
-        public const int MAX_PM_HOUR = 1700; // 17 o'clock
+        public const int MAX_PM_HOUR = 1900; // 17 o'clock
 
         private const int SESSION_CAPACITY = 30;
         private const int MAX_EXAM_DAYS = 14; // the all exam spends 14 days at most
@@ -301,10 +306,14 @@ namespace ExamTable.Controllers.algorithm
 
         private static TimeValueInterval getConflictTimeData(List<TimeValueInterval> occupied, TimeValueInterval one)
         {
-            foreach (TimeValueInterval ti in occupied)
+            // Jane: added null check 20180426 if (occupied != null)
+            if (occupied != null)
             {
-                if (ti != null && ti.isConflict(one))
-                    return ti;
+                foreach (TimeValueInterval ti in occupied)
+                {
+                    if (ti != null && ti.isConflict(one))
+                        return ti;
+                }
             }
 
             return null;
@@ -832,7 +841,13 @@ namespace ExamTable.Controllers.algorithm
             }
 
             room.arrangeExam(timeData);
-            allLevelTimeLine[course.level].Add(timeData);
+
+            // Jane: added null check 20180426 if (allLevelTimeLine[ce.level] != null) 
+            if (allLevelTimeLine[course.level] != null)
+            {
+                allLevelTimeLine[course.level].Add(timeData);
+            }
+            
             return exam;
         }
 
@@ -858,7 +873,12 @@ namespace ExamTable.Controllers.algorithm
                     entity.endHour = TimeValueInterval.value2Hour(timeData.endValue);
 
                     r.arrangeExam(timeData);
-                    allLevelTimeLine[ce.level].Add(timeData);
+
+                    // Jane: added null check 20180426 if (allLevelTimeLine[ce.level] != null) 
+                    if (allLevelTimeLine[ce.level] != null) 
+                    {
+                        allLevelTimeLine[ce.level].Add(timeData);
+                    }
 
                     int sessionsThisRoom = r.roomCapacity / SESSION_CAPACITY;
                     for (int i = 0; i < sessionsThisRoom; ++i, ++sessionIndex)
